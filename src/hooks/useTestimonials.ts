@@ -3,15 +3,25 @@ import { supabase } from "@/integrations/supabase/client";
 
 export const useTestimonials = () => {
   return useQuery({
-    queryKey: ['testimonials'],
+    queryKey: ["testimonials"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('testimonials')
-        .select('*')
-        .order('created_at', { ascending: false });
+      try {
+        const { data, error } = await supabase
+          .from("testimonials")
+          .select("*")
+          .order("created_at", { ascending: false });
 
-      if (error) throw error;
-      return data;
-    }
+        if (error) {
+          console.error("Error fetching testimonials:", error);
+          return [];
+        }
+
+        return data || [];
+      } catch (err) {
+        console.error("Error in useTestimonials:", err);
+        return [];
+      }
+    },
+    initialData: [],
   });
 };

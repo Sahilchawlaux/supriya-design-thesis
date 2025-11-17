@@ -18,10 +18,9 @@ const Navbar = () => {
   
   const navLinks = [
     { path: "/", label: "Home" },
-    { path: "/about", label: "About" },
+    { path: "/about", label: "About Us" },
     { path: "/portfolio", label: "Portfolio" },
     { path: "/testimonials", label: "Testimonials" },
-    { path: "/collections", label: "Shop" },
     { path: "/contact", label: "Contact" },
   ];
 
@@ -30,6 +29,17 @@ const Navbar = () => {
     const target = event.target as HTMLElement;
     if (!target.closest('.user-menu-container')) {
       setIsUserMenuOpen(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    console.log('Sign out button clicked');
+    try {
+      console.log('Initiating sign out...');
+      await logout();
+      console.log('Sign out successful');
+    } catch (error) {
+      console.error('Failed to sign out:', error);
     }
   };
 
@@ -84,26 +94,26 @@ const Navbar = () => {
                 className="flex items-center gap-2"
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
               >
-                <User size={18} />
-                <span className="text-sm">{user.name}</span>
+                <User size={18} className="text-black" />
+                <span className="text-sm text-black">{user.name}</span>
               </Button>
               {isUserMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-background border border-border rounded-md shadow-lg py-1">
+                <div className="absolute right-0 mt-2 w-48 bg-background border border-border rounded-12 shadow-lg py-1">
                   {user.isAdmin && (
                     <Link 
                       to="/admin" 
-                      className="block px-4 py-2 text-sm hover:bg-secondary"
+                      className="block px-4 py-2 text-sm text-black hover:bg-secondary"
                       onClick={() => setIsUserMenuOpen(false)}
                     >
                       Admin Dashboard
                     </Link>
                   )}
                   <button 
-                    onClick={() => {
-                      logout();
+                    onClick={async () => {
+                      await handleLogout();
                       setIsUserMenuOpen(false);
                     }}
-                    className="block w-full text-left px-4 py-2 text-sm hover:bg-secondary"
+                    className="block w-full text-left px-4 py-2 text-sm text-black hover:bg-secondary"
                   >
                     Sign Out
                   </button>
@@ -112,12 +122,12 @@ const Navbar = () => {
             </div>
           ) : (
             <Link to="/login">
-              <Button variant="ghost" className="text-sm uppercase tracking-widest">Sign In</Button>
+              <Button variant="outline" className="text-sm uppercase tracking-widest border-gold text-gold hover:bg-gold hover:text-white">Sign In</Button>
             </Link>
           )}
           
           <Link to="/checkout" className="relative">
-            <Button variant="ghost" className="p-2">
+            <Button variant="ghost" className="p-2 text-foreground hover:text-primary">
               <ShoppingBag size={18} />
               {cartItemCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -131,7 +141,7 @@ const Navbar = () => {
         {/* Mobile menu button */}
         <div className="flex md:hidden items-center space-x-4">
           <Link to="/checkout" className="relative">
-            <Button variant="ghost" size="sm" className="p-1">
+            <Button variant="ghost" size="sm" className="p-1 text-foreground hover:text-primary">
               <ShoppingBag size={18} />
               {cartItemCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -185,9 +195,16 @@ const Navbar = () => {
                     </Link>
                   )}
                   <Button 
-                    onClick={() => {
-                      logout();
-                      setIsMenuOpen(false);
+                    onClick={async () => {
+                      console.log('Sign out button clicked');
+                      try {
+                        console.log('Initiating sign out...');
+                        await logout();
+                        console.log('Sign out successful');
+                        // The auth state change will be handled by the AuthProvider
+                      } catch (error) {
+                        console.error('Failed to sign out:', error);
+                      }
                     }}
                     variant="ghost" 
                     className="w-full text-left p-0 justify-start h-auto text-base"

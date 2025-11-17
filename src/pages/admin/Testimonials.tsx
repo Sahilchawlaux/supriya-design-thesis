@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Edit, Trash2, Plus, Star, Loader2 } from "lucide-react";
+import { Edit, Trash2, Plus, Star, Loader2, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Testimonial {
@@ -38,6 +38,8 @@ interface Testimonial {
   date: string;
   company?: string;
   is_featured: boolean;
+  is_approved?: boolean;
+  is_selected?: boolean;
 }
 
 const AdminTestimonials = () => {
@@ -73,6 +75,8 @@ const AdminTestimonials = () => {
           date: t.created_at ? t.created_at.split('T')[0] : '',
           company: t.company || '',
           is_featured: t.is_featured || false,
+          is_approved: t.is_approved || false,
+          is_selected: t.is_selected || false,
         })));
       }
     };
@@ -144,6 +148,8 @@ const AdminTestimonials = () => {
         date: t.created_at ? t.created_at.split('T')[0] : '',
         company: t.company || '',
         is_featured: t.is_featured || false,
+        is_approved: t.is_approved || false,
+        is_selected: t.is_selected || false,
       })));
     }
   };
@@ -239,7 +245,10 @@ const AdminTestimonials = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-serif">Manage Testimonials</h1>
+        <div>
+          <h1 className="text-3xl font-serif mb-2">Manage Testimonials</h1>
+          <p className="text-muted-foreground">Review and manage testimonials. Featured testimonials appear on the home page.</p>
+        </div>
         
         <Dialog>
           <DialogTrigger asChild>
@@ -248,6 +257,9 @@ const AdminTestimonials = () => {
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[500px]">
+            <DialogClose className="absolute right-4 top-4 text-black hover:text-black/80">
+              <X size={18} />
+            </DialogClose>
             <DialogHeader>
               <DialogTitle>Add New Testimonial</DialogTitle>
               <DialogDescription>
@@ -258,32 +270,34 @@ const AdminTestimonials = () => {
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="name">Client Name</Label>
+                  <Label htmlFor="name" className="text-black">Client Name</Label>
                   <Input
                     id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="John Doe"
+                    className="text-black bg-white placeholder:text-gray-500"
                     required
                   />
                 </div>
                 
                 <div className="grid gap-2">
-                  <Label htmlFor="title">Client Title</Label>
+                  <Label htmlFor="title" className="text-black">Client Title</Label>
                   <Input
                     id="title"
                     name="title"
                     value={formData.title}
                     onChange={handleInputChange}
                     placeholder="Bride, Event Planner, etc."
+                    className="text-black bg-white placeholder:text-gray-500"
                     required
                   />
                 </div>
               </div>
               
               <div className="grid gap-2">
-                <Label htmlFor="content">Testimonial Content</Label>
+                <Label htmlFor="content" className="text-black">Testimonial Content</Label>
                 <Textarea
                   id="content"
                   name="content"
@@ -291,29 +305,31 @@ const AdminTestimonials = () => {
                   onChange={handleInputChange}
                   placeholder="What did the client say about your services?"
                   rows={4}
+                  className="text-black bg-white placeholder:text-gray-500"
                   required
                 />
               </div>
               
               <div className="grid gap-2">
-                <Label htmlFor="image">Client Image URL (optional)</Label>
+                <Label htmlFor="image" className="text-black">Client Image URL (optional)</Label>
                 <Input
                   id="image"
                   name="image_url"
                   value={formData.image_url}
                   onChange={handleInputChange}
                   placeholder="https://example.com/image.jpg"
+                  className="text-black bg-white placeholder:text-gray-500"
                 />
               </div>
               
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="rating">Rating</Label>
+                  <Label htmlFor="rating" className="text-black">Rating</Label>
                   <Select 
                     value={formData.rating} 
                     onValueChange={handleSelectChange}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="text-black">
                       <SelectValue placeholder="Select Rating" />
                     </SelectTrigger>
                     <SelectContent>
@@ -327,20 +343,21 @@ const AdminTestimonials = () => {
                 </div>
                 
                 <div className="grid gap-2">
-                  <Label htmlFor="date">Date</Label>
+                  <Label htmlFor="date" className="text-black">Date</Label>
                   <Input
                     id="date"
                     name="date"
                     type="date"
                     value={formData.date}
                     onChange={handleInputChange}
+                    className="text-black bg-white placeholder:text-gray-500"
                     required
                   />
                 </div>
               </div>
               
               <div>
-                <Label htmlFor="is_featured">Featured</Label>
+                <Label htmlFor="is_featured" className="text-black">Featured</Label>
                 <input
                   id="is_featured"
                   name="is_featured"
@@ -367,6 +384,81 @@ const AdminTestimonials = () => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      </div>
+      
+      {/* Featured Testimonials Section */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-serif mb-4">Featured Testimonials</h2>
+        <p className="text-muted-foreground mb-4">These testimonials will appear on the home page. Maximum 2 can be featured.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {testimonials.filter(t => t.is_featured).map((testimonial) => (
+            <Card key={testimonial.id} className="overflow-hidden border-gold">
+              <CardContent className="p-6">
+                <div className="flex justify-between items-start">
+                  <div className="flex items-center">
+                    {testimonial.image_url ? (
+                      <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                        <img 
+                          src={testimonial.image_url} 
+                          alt={testimonial.name} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center mr-4">
+                        <span className="font-medium text-lg">
+                          {testimonial.name.charAt(0)}
+                        </span>
+                      </div>
+                    )}
+                    <div>
+                      <p className="font-medium">{testimonial.name}</p>
+                      <p className="text-sm text-muted-foreground">{testimonial.title}</p>
+                    </div>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={async () => {
+                      const { error } = await supabase
+                        .from('testimonials')
+                        .update({ is_featured: false })
+                        .eq('id', testimonial.id);
+                      if (error) {
+                        toast.error(error.message);
+                      } else {
+                        toast.success("Removed from featured");
+                        const { data } = await supabase.from('testimonials').select('*').order('created_at', { ascending: false });
+                        if (data) setTestimonials(data.map((t: any) => ({
+                          id: t.id,
+                          name: t.name,
+                          title: t.role || '',
+                          content: t.content,
+                          image_url: t.image_url || '',
+                          rating: t.rating || 5,
+                          date: t.created_at ? t.created_at.split('T')[0] : '',
+                          company: t.company || '',
+                          is_featured: t.is_featured || false,
+                          is_approved: t.is_approved || false,
+                          is_selected: t.is_selected || false,
+                        })));
+                      }
+                    }}
+                  >
+                    Remove from Featured
+                  </Button>
+                </div>
+                <blockquote className="text-lg mt-4">
+                  "{testimonial.content}"
+                </blockquote>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <h2 className="text-2xl font-serif mb-4">All Testimonials</h2>
       </div>
       
       <div className="grid grid-cols-1 gap-6">
@@ -425,6 +517,9 @@ const AdminTestimonials = () => {
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[500px]">
+                      <DialogClose className="absolute right-4 top-4 text-black hover:text-black/80">
+                        <X size={18} />
+                      </DialogClose>
                       <DialogHeader>
                         <DialogTitle>Edit Testimonial</DialogTitle>
                         <DialogDescription>
@@ -435,58 +530,62 @@ const AdminTestimonials = () => {
                       <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-2 gap-4">
                           <div className="grid gap-2">
-                            <Label htmlFor="edit-name">Client Name</Label>
+                            <Label htmlFor="edit-name" className="text-black">Client Name</Label>
                             <Input
                               id="edit-name"
                               name="name"
                               value={formData.name}
                               onChange={handleInputChange}
+                              className="text-black bg-white placeholder:text-gray-500"
                               required
                             />
                           </div>
                           
                           <div className="grid gap-2">
-                            <Label htmlFor="edit-title">Client Title</Label>
+                            <Label htmlFor="edit-title" className="text-black">Client Title</Label>
                             <Input
                               id="edit-title"
                               name="title"
                               value={formData.title}
                               onChange={handleInputChange}
+                              className="text-black bg-white placeholder:text-gray-500"
                               required
                             />
                           </div>
                         </div>
                         
                         <div className="grid gap-2">
-                          <Label htmlFor="edit-content">Testimonial Content</Label>
+                          <Label htmlFor="edit-content" className="text-black">Testimonial Content</Label>
                           <Textarea
                             id="edit-content"
                             name="content"
                             value={formData.content}
                             onChange={handleInputChange}
                             rows={4}
+                            className="text-black bg-white placeholder:text-gray-500"
                             required
                           />
                         </div>
                         
                         <div className="grid gap-2">
-                          <Label htmlFor="edit-image">Client Image URL (optional)</Label>
+                          <Label htmlFor="edit-image" className="text-black">Client Image URL (optional)</Label>
                           <Input
                             id="edit-image"
                             name="image_url"
                             value={formData.image_url}
                             onChange={handleInputChange}
+                            className="text-black bg-white placeholder:text-gray-500"
                           />
                         </div>
                         
                         <div className="grid grid-cols-2 gap-4">
                           <div className="grid gap-2">
-                            <Label htmlFor="edit-rating">Rating</Label>
+                            <Label htmlFor="edit-rating" className="text-black">Rating</Label>
                             <Select 
                               value={formData.rating} 
                               onValueChange={handleSelectChange}
                             >
-                              <SelectTrigger id="edit-rating">
+                              <SelectTrigger id="edit-rating" className="text-black">
                                 <SelectValue placeholder="Select Rating" />
                               </SelectTrigger>
                               <SelectContent>
@@ -500,20 +599,21 @@ const AdminTestimonials = () => {
                           </div>
                           
                           <div className="grid gap-2">
-                            <Label htmlFor="edit-date">Date</Label>
+                            <Label htmlFor="edit-date" className="text-black">Date</Label>
                             <Input
                               id="edit-date"
                               name="date"
                               type="date"
                               value={formData.date}
                               onChange={handleInputChange}
+                              className="text-black bg-white placeholder:text-gray-500"
                               required
                             />
                           </div>
                         </div>
                         
                         <div>
-                          <Label htmlFor="edit-is_featured">Featured</Label>
+                          <Label htmlFor="edit-is_featured" className="text-black">Featured</Label>
                           <input
                             id="edit-is_featured"
                             name="is_featured"
@@ -541,6 +641,218 @@ const AdminTestimonials = () => {
                     </DialogContent>
                   </Dialog>
                   
+                  {!testimonial.is_featured && testimonials.filter(t => t.is_featured).length < 2 && (
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={async () => {
+                        if (!testimonial.is_approved) {
+                          toast.error("Approve the testimonial before featuring");
+                          return;
+                        }
+                        const { error } = await supabase
+                          .from('testimonials')
+                          .update({ is_featured: true })
+                          .eq('id', testimonial.id);
+                        if (error) {
+                          toast.error(error.message);
+                        } else {
+                          toast.success("Added to featured");
+                          const { data } = await supabase.from('testimonials').select('*').order('created_at', { ascending: false });
+                          if (data) setTestimonials(data.map((t: any) => ({
+                            id: t.id,
+                            name: t.name,
+                            title: t.role || '',
+                            content: t.content,
+                            image_url: t.image_url || '',
+                            rating: t.rating || 5,
+                            date: t.created_at ? t.created_at.split('T')[0] : '',
+                            company: t.company || '',
+                            is_featured: t.is_featured || false,
+                            is_approved: t.is_approved || false,
+                            is_selected: t.is_selected || false,
+                          })));
+                        }
+                      }}
+                      className="mr-2"
+                    >
+                      Feature on Home
+                    </Button>
+                  )}
+                  {!testimonial.is_approved && (
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={async () => {
+                        const { error } = await supabase
+                          .from('testimonials')
+                          .update({ is_approved: true })
+                          .eq('id', testimonial.id);
+                        if (error) {
+                          toast.error(error.message);
+                        } else {
+                          toast.success("Testimonial approved");
+                          const { data } = await supabase.from('testimonials').select('*').order('created_at', { ascending: false });
+                          if (data) setTestimonials(data.map((t: any) => ({
+                            id: t.id,
+                            name: t.name,
+                            title: t.role || '',
+                            content: t.content,
+                            image_url: t.image_url || '',
+                            rating: t.rating || 5,
+                            date: t.created_at ? t.created_at.split('T')[0] : '',
+                            company: t.company || '',
+                            is_featured: t.is_featured || false,
+                            is_approved: t.is_approved || false,
+                            is_selected: t.is_selected || false,
+                          })));
+                        }
+                      }}
+                      className="mr-2"
+                    >
+                      Approve
+                    </Button>
+                  )}
+                  {testimonial.is_approved && !testimonial.is_featured && testimonials.filter(t => t.is_featured).length < 2 && (
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={async () => {
+                        const { error } = await supabase
+                          .from('testimonials')
+                          .update({ is_featured: true })
+                          .eq('id', testimonial.id);
+                        if (error) {
+                          toast.error(error.message);
+                        } else {
+                          toast.success("Added to featured");
+                          const { data } = await supabase.from('testimonials').select('*').order('created_at', { ascending: false });
+                          if (data) setTestimonials(data.map((t: any) => ({
+                            id: t.id,
+                            name: t.name,
+                            title: t.role || '',
+                            content: t.content,
+                            image_url: t.image_url || '',
+                            rating: t.rating || 5,
+                            date: t.created_at ? t.created_at.split('T')[0] : '',
+                            company: t.company || '',
+                            is_featured: t.is_featured || false,
+                            is_approved: t.is_approved || false,
+                            is_selected: t.is_selected || false,
+                          })));
+                        }
+                      }}
+                      className="mr-2"
+                    >
+                      Feature on Home
+                    </Button>
+                  )}
+                  {!testimonial.is_selected && testimonials.filter(t => t.is_selected).length < 8 && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={async () => {
+                        if (!testimonial.is_approved) {
+                          toast.error("Approve the testimonial before selecting for the page");
+                          return;
+                        }
+                        const { error } = await supabase
+                          .from('testimonials')
+                          .update({ is_selected: true })
+                          .eq('id', testimonial.id);
+                        if (error) {
+                          toast.error(error.message);
+                        } else {
+                          toast.success("Selected for testimonials page");
+                          const { data } = await supabase.from('testimonials').select('*').order('created_at', { ascending: false });
+                          if (data) setTestimonials(data.map((t: any) => ({
+                            id: t.id,
+                            name: t.name,
+                            title: t.role || '',
+                            content: t.content,
+                            image_url: t.image_url || '',
+                            rating: t.rating || 5,
+                            date: t.created_at ? t.created_at.split('T')[0] : '',
+                            company: t.company || '',
+                            is_featured: t.is_featured || false,
+                            is_approved: t.is_approved || false,
+                            is_selected: t.is_selected || false,
+                          })));
+                        }
+                      }}
+                      className="mr-2"
+                    >
+                      Show on Testimonials Page
+                    </Button>
+                  )}
+                  {testimonial.is_selected && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={async () => {
+                        const { error } = await supabase
+                          .from('testimonials')
+                          .update({ is_selected: false })
+                          .eq('id', testimonial.id);
+                        if (error) {
+                          toast.error(error.message);
+                        } else {
+                          toast.success("Removed from testimonials page");
+                          const { data } = await supabase.from('testimonials').select('*').order('created_at', { ascending: false });
+                          if (data) setTestimonials(data.map((t: any) => ({
+                            id: t.id,
+                            name: t.name,
+                            title: t.role || '',
+                            content: t.content,
+                            image_url: t.image_url || '',
+                            rating: t.rating || 5,
+                            date: t.created_at ? t.created_at.split('T')[0] : '',
+                            company: t.company || '',
+                            is_featured: t.is_featured || false,
+                            is_approved: t.is_approved || false,
+                            is_selected: t.is_selected || false,
+                          })));
+                        }
+                      }}
+                      className="mr-2"
+                    >
+                      Remove from Testimonials Page
+                    </Button>
+                  )}
+                  {testimonial.is_featured && (
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={async () => {
+                        const { error } = await supabase
+                          .from('testimonials')
+                          .update({ is_featured: false })
+                          .eq('id', testimonial.id);
+                        if (error) {
+                          toast.error(error.message);
+                        } else {
+                          toast.success("Removed from featured");
+                          const { data } = await supabase.from('testimonials').select('*').order('created_at', { ascending: false });
+                          if (data) setTestimonials(data.map((t: any) => ({
+                            id: t.id,
+                            name: t.name,
+                            title: t.role || '',
+                            content: t.content,
+                            image_url: t.image_url || '',
+                            rating: t.rating || 5,
+                            date: t.created_at ? t.created_at.split('T')[0] : '',
+                            company: t.company || '',
+                            is_featured: t.is_featured || false,
+                            is_approved: t.is_approved || false,
+                            is_selected: t.is_selected || false,
+                          })));
+                        }
+                      }}
+                      className="mr-2"
+                    >
+                      Remove from Featured
+                    </Button>
+                  )}
                   <Button 
                     variant="destructive" 
                     size="sm"

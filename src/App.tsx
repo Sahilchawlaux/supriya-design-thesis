@@ -21,7 +21,6 @@ import Contact from "./pages/Contact";
 import Checkout from "./pages/Checkout";
 import Success from "./pages/Success";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 
 // Admin Pages
@@ -83,5 +82,4 @@ const App = () => (
     </AuthProvider>
   </QueryClientProvider>
 );
-
 export default App;

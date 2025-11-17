@@ -18,47 +18,62 @@ import {
   DialogFooter,
   DialogClose
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Edit, Trash2, Plus, Image, Loader2 } from "lucide-react";
+import { supabase, supabaseAdmin } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 
-// Mock collection data
-const initialCollections = [
-  {
-    id: "1",
-    title: "Elegant Florals",
-    description: "Romantic floral invitation designs with delicate illustration",
-    image: "https://images.unsplash.com/photo-1600164318544-79e55da1ac8e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    price: 39.99,
-    category: "Floral"
-  },
-  {
-    id: "2",
-    title: "Modern Minimalist",
-    description: "Clean, contemporary designs with stylish typography",
-    image: "https://images.unsplash.com/photo-1561587327-95cca85ec13b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    price: 34.99,
-    category: "Minimalist"
-  },
-  {
-    id: "3",
-    title: "Rustic Charm",
-    description: "Warm, natural designs with a handcrafted feel",
-    image: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-    price: 29.99,
-    category: "Rustic"
-  }
-];
+type PortfolioItem = Database['public']['Tables']['portfolio_items']['Row'];
 
-interface Collection {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  price: number;
-  category: string;
+// Predefined category structure
+const CATEGORY_STRUCTURE = {
+  "Wedding": [
+    "Invitations",
+    "Save the Date",
+    "Thank You Cards",
+    "Menu Cards",
+    "Programs",
+    "Place Cards"
+  ],
+  "Corporate": [
+    "Business Cards",
+    "Letterheads",
+    "Brochures",
+    "Presentations",
+    "Annual Reports",
+    "Event Materials"
+  ],
+  "Personal": [
+    "Birthday Invitations",
+    "Anniversary Cards",
+    "Holiday Cards",
+    "Graduation",
+    "Baby Shower",
+    "Personal Stationery"
+  ],
+  "Digital": [
+    "Social Media Graphics",
+    "Email Templates",
+    "Web Banners",
+    "Digital Invitations",
+    "Instagram Stories",
+    "Logo Design"
+  ]
+};
+
+interface Collection extends PortfolioItem {
+  mainCategory?: string;
+  subCategory?: string;
 }
 
 const AdminCollections = () => {
@@ -69,24 +84,50 @@ const AdminCollections = () => {
     title: "",
     description: "",
     image: "",
-    price: "",
-    category: ""
+    mainCategory: "",
+    subCategory: ""
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate fetching collections from API
-    setTimeout(() => {
-      setCollections(initialCollections);
-    }, 500);
+    fetchCollections();
   }, []);
+
+  const fetchCollections = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabaseAdmin
+        .from('portfolio_items')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      const collectionsWithCategories = data?.map(item => {
+        const [mainCategory, subCategory] = item.category.split(' > ');
+        return {
+          ...item,
+          mainCategory: mainCategory || item.category,
+          subCategory: subCategory || ''
+        };
+      }) || [];
+      
+      setCollections(collectionsWithCategories);
+    } catch (error) {
+      console.error('Error fetching collections:', error);
+      toast.error('Failed to load collections');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const resetFormData = () => {
     setFormData({
       title: "",
       description: "",
       image: "",
-      price: "",
-      category: ""
+      mainCategory: "",
+      subCategory: ""
     });
   };
 
@@ -95,33 +136,41 @@ const AdminCollections = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddCollection = () => {
+  const handleAddCollection = async () => {
     setIsSubmitting(true);
     
     // Validate form data
-    if (!formData.title || !formData.description || !formData.image || !formData.price || !formData.category) {
+    if (!formData.title || !formData.description || !formData.image || !formData.mainCategory || !formData.subCategory) {
       toast.error("Please fill in all fields");
       setIsSubmitting(false);
       return;
     }
 
-    // Create new collection object
-    const newCollection: Collection = {
-      id: Date.now().toString(),
-      title: formData.title,
-      description: formData.description,
-      image: formData.image,
-      price: parseFloat(formData.price),
-      category: formData.category
-    };
+    try {
+      const category = `${formData.mainCategory} > ${formData.subCategory}`;
+      
+      const { data, error } = await supabaseAdmin
+        .from('portfolio_items')
+        .insert({
+          title: formData.title,
+          description: formData.description,
+          image: formData.image,
+          category: category
+        })
+        .select()
+        .single();
 
-    // Simulate API call
-    setTimeout(() => {
-      setCollections([...collections, newCollection]);
+      if (error) throw error;
+
+      await fetchCollections();
       resetFormData();
-      setIsSubmitting(false);
       toast.success("Collection added successfully!");
-    }, 1000);
+    } catch (error) {
+      console.error('Error adding collection:', error);
+      toast.error('Failed to add collection');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleEditCollection = (collection: Collection) => {
@@ -130,51 +179,65 @@ const AdminCollections = () => {
       title: collection.title,
       description: collection.description,
       image: collection.image,
-      price: collection.price.toString(),
-      category: collection.category
+      mainCategory: collection.mainCategory || '',
+      subCategory: collection.subCategory || ''
     });
   };
 
-  const handleUpdateCollection = () => {
+  const handleUpdateCollection = async () => {
     if (!editingCollection) return;
     setIsSubmitting(true);
 
     // Validate form data
-    if (!formData.title || !formData.description || !formData.image || !formData.price || !formData.category) {
+    if (!formData.title || !formData.description || !formData.image || !formData.mainCategory || !formData.subCategory) {
       toast.error("Please fill in all fields");
       setIsSubmitting(false);
       return;
     }
 
-    // Update collection
-    const updatedCollection = {
-      ...editingCollection,
-      title: formData.title,
-      description: formData.description,
-      image: formData.image,
-      price: parseFloat(formData.price),
-      category: formData.category
-    };
+    try {
+      const category = `${formData.mainCategory} > ${formData.subCategory}`;
+      
+      const { error } = await supabaseAdmin
+        .from('portfolio_items')
+        .update({
+          title: formData.title,
+          description: formData.description,
+          image: formData.image,
+          category: category
+        })
+        .eq('id', editingCollection.id);
 
-    // Simulate API call
-    setTimeout(() => {
-      setCollections(
-        collections.map(c => (c.id === editingCollection.id ? updatedCollection : c))
-      );
+      if (error) throw error;
+
+      await fetchCollections();
       setEditingCollection(null);
       resetFormData();
-      setIsSubmitting(false);
       toast.success("Collection updated successfully!");
-    }, 1000);
+    } catch (error) {
+      console.error('Error updating collection:', error);
+      toast.error('Failed to update collection');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleDeleteCollection = (id: string) => {
+  const handleDeleteCollection = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this collection?")) {
-      // Simulate API call
-      setTimeout(() => {
-        setCollections(collections.filter(c => c.id !== id));
+      try {
+        const { error } = await supabaseAdmin
+          .from('portfolio_items')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+
+        await fetchCollections();
         toast.success("Collection deleted successfully!");
-      }, 500);
+      } catch (error) {
+        console.error('Error deleting collection:', error);
+        toast.error('Failed to delete collection');
+      }
     }
   };
 
@@ -234,28 +297,42 @@ const AdminCollections = () => {
               
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="price">Price (USD)</Label>
-                  <Input
-                    id="price"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleInputChange}
-                    placeholder="29.99"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                  />
+                  <Label htmlFor="mainCategory">Main Category</Label>
+                  <Select
+                    value={formData.mainCategory}
+                    onValueChange={(value) => setFormData({ ...formData, mainCategory: value, subCategory: "" })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select main category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.keys(CATEGORY_STRUCTURE).map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div className="grid gap-2">
-                  <Label htmlFor="category">Category</Label>
-                  <Input
-                    id="category"
-                    name="category"
-                    value={formData.category}
-                    onChange={handleInputChange}
-                    placeholder="Floral, Minimalist, etc."
-                  />
+                  <Label htmlFor="subCategory">Subcategory</Label>
+                  <Select
+                    value={formData.subCategory}
+                    onValueChange={(value) => setFormData({ ...formData, subCategory: value })}
+                    disabled={!formData.mainCategory}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select subcategory" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {formData.mainCategory && CATEGORY_STRUCTURE[formData.mainCategory as keyof typeof CATEGORY_STRUCTURE]?.map((subCategory) => (
+                        <SelectItem key={subCategory} value={subCategory}>
+                          {subCategory}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
@@ -277,13 +354,18 @@ const AdminCollections = () => {
         </Dialog>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {collections.length === 0 ? (
-          <p className="col-span-full text-center py-12 text-muted-foreground">
-            No collections found. Add your first collection to get started.
-          </p>
-        ) : (
-          collections.map((collection) => (
+      {loading ? (
+        <div className="flex justify-center items-center h-48">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {collections.length === 0 ? (
+            <p className="col-span-full text-center py-12 text-muted-foreground">
+              No collections found. Add your first collection to get started.
+            </p>
+          ) : (
+            collections.map((collection) => (
             <Card key={collection.id} className="overflow-hidden">
               <CardHeader className="p-0">
                 <div className="aspect-[4/3] relative">
@@ -298,8 +380,12 @@ const AdminCollections = () => {
                 <CardTitle className="text-xl mb-2">{collection.title}</CardTitle>
                 <p className="text-sm text-muted-foreground mb-2">{collection.description}</p>
                 <div className="flex items-center justify-between">
-                  <p className="text-gold font-medium">${collection.price.toFixed(2)}</p>
-                  <span className="text-xs px-2 py-1 bg-secondary rounded-full">{collection.category}</span>
+                  <span className="text-xs px-2 py-1 bg-primary/10 text-primary rounded-full">
+                    {collection.mainCategory}
+                  </span>
+                  <span className="text-xs px-2 py-1 bg-secondary rounded-full">
+                    {collection.subCategory}
+                  </span>
                 </div>
               </CardContent>
               <CardFooter className="p-4 pt-0 flex justify-end gap-2">
@@ -355,26 +441,42 @@ const AdminCollections = () => {
                       
                       <div className="grid grid-cols-2 gap-4">
                         <div className="grid gap-2">
-                          <Label htmlFor="edit-price">Price (USD)</Label>
-                          <Input
-                            id="edit-price"
-                            name="price"
-                            value={formData.price}
-                            onChange={handleInputChange}
-                            type="number"
-                            step="0.01"
-                            min="0"
-                          />
+                          <Label htmlFor="edit-mainCategory">Main Category</Label>
+                          <Select
+                            value={formData.mainCategory}
+                            onValueChange={(value) => setFormData({ ...formData, mainCategory: value, subCategory: "" })}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select main category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.keys(CATEGORY_STRUCTURE).map((category) => (
+                                <SelectItem key={category} value={category}>
+                                  {category}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </div>
                         
                         <div className="grid gap-2">
-                          <Label htmlFor="edit-category">Category</Label>
-                          <Input
-                            id="edit-category"
-                            name="category"
-                            value={formData.category}
-                            onChange={handleInputChange}
-                          />
+                          <Label htmlFor="edit-subCategory">Subcategory</Label>
+                          <Select
+                            value={formData.subCategory}
+                            onValueChange={(value) => setFormData({ ...formData, subCategory: value })}
+                            disabled={!formData.mainCategory}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select subcategory" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {formData.mainCategory && CATEGORY_STRUCTURE[formData.mainCategory as keyof typeof CATEGORY_STRUCTURE]?.map((subCategory) => (
+                                <SelectItem key={subCategory} value={subCategory}>
+                                  {subCategory}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </div>
                       </div>
                     </div>
@@ -404,9 +506,10 @@ const AdminCollections = () => {
                 </Button>
               </CardFooter>
             </Card>
-          ))
-        )}
-      </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 };

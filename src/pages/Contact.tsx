@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import heroBackground from "@/assets/hero-background.jpg";
 
 const ContactPage = () => {
   const [formState, setFormState] = useState({
@@ -81,17 +82,25 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="bg-cream-light">
+    <div className="bg-dark-gray">
       {/* Hero Section */}
       <motion.section 
-        className="py-20 md:py-28 bg-white border-b border-gray-100"
+        className="relative py-20 md:py-28 overflow-hidden border-b border-gray-700"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="container mx-auto px-4 text-center">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src={heroBackground} 
+            alt="Elegant floral background with dark botanical design" 
+            className="w-full h-full object-cover object-center opacity-100"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-dark-gray/60 via-dark-gray/40 to-dark-gray/70"></div>
+        </div>
+        <div className="container mx-auto px-4 text-center relative z-10">
           <motion.h1 
-            className="font-display text-4xl md:text-5xl lg:text-6xl mb-6"
+            className="font-display text-4xl md:text-5xl lg:text-6xl mb-6 text-white"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -105,7 +114,7 @@ const ContactPage = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
           ></motion.div>
           <motion.p 
-            className="text-charcoal-light max-w-2xl mx-auto text-lg"
+            className="text-gray-300 max-w-2xl mx-auto text-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -332,7 +341,7 @@ const ContactPage = () => {
       </motion.section> */}
 
       {/* FAQ Section */}
-      <section className="py-20 bg-cream-light">
+      <section className="py-20 bg-dark-gray-light">
         <div className="container mx-auto px-4">
           <motion.div 
             className="text-center mb-12"
@@ -355,30 +364,30 @@ const ContactPage = () => {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <motion.div variants={fadeInUp} className="p-6 bg-white rounded-lg shadow-sm">
-              <h3 className="font-medium text-lg mb-3">How do digital invitations work?</h3>
-              <p className="text-charcoal-light">
-                After purchase, you'll receive a customized digital file that you can share with guests via email, social media, or messaging apps. We also offer printing services if you'd prefer physical copies.
+            <motion.div variants={fadeInUp} className="p-6 bg-white rounded-12 shadow-sm">
+              <h3 className="font-medium text-charcoal-dark text-xl mb-3">What type of invitations do you provide?</h3>
+              <p className="text-charcoal-dark">
+                We provide video and PDF invitations with or without customized caricatures and logos.
               </p>
             </motion.div>
             
-            <motion.div variants={fadeInUp} className="p-6 bg-white rounded-lg shadow-sm">
-              <h3 className="font-medium text-lg mb-3">How long does customization take?</h3>
-              <p className="text-charcoal-light">
-                For standard customizations, we typically deliver within 2-3 business days. For complex custom designs, it may take 5-7 business days.
+            <motion.div variants={fadeInUp} className="p-6 bg-white rounded-12 shadow-sm">
+              <h3 className="font-medium text-charcoal-dark text-xl mb-3">What is your customization timeline?</h3>
+              <p className="text-charcoal-dark">
+                5-6 business days for standard designs, 8-9 business days for complex designs.
               </p>
             </motion.div>
             
-            <motion.div variants={fadeInUp} className="p-6 bg-white rounded-lg shadow-sm">
-              <h3 className="font-medium text-lg mb-3">Can I request changes after receiving my design?</h3>
-              <p className="text-charcoal-light">
-                Yes, we offer one round of minor revisions at no additional cost. Additional or major revisions may incur extra charges.
+            <motion.div variants={fadeInUp} className="p-6 bg-white rounded-12 shadow-sm">
+              <h3 className="font-medium text-charcoal-dark text-xl mb-3">Can I request revisions?</h3>
+              <p className="text-charcoal-dark">
+                Yes, 2 rounds of revisions only for text are included before the final delivery. Any additional revisions may incur extra charges in text or design.
               </p>
             </motion.div>
             
-            <motion.div variants={fadeInUp} className="p-6 bg-white rounded-lg shadow-sm">
-              <h3 className="font-medium text-lg mb-3">Do you offer rush services?</h3>
-              <p className="text-charcoal-light">
+            <motion.div variants={fadeInUp} className="p-6 bg-white rounded-12 shadow-sm">
+              <h3 className="font-medium text-charcoal-dark text-xl mb-3">Do you offer rush services and other design services?</h3>
+              <p className="text-charcoal-dark">
                 Yes, we offer rush services for an additional fee. Please contact us directly to discuss your timeline and requirements.
               </p>
             </motion.div>

@@ -2,10 +2,13 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = "https://ulcclgfucirshbgdprbb.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVsY2NsZ2Z1Y2lyc2hiZ2RwcmJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM3NjYyMDAsImV4cCI6MjA1OTM0MjIwMH0.uM8T6edWAuVTRGSofmk2OgG6DKtCK78RE3ewEkegTzU";
+const SUPABASE_URL = "https://qsigzgezsctokzwabovr.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzaWd6Z2V6c2N0b2t6d2Fib3ZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg2NTU4MzUsImV4cCI6MjA3NDIzMTgzNX0.GyAH5abUV6gZKhbXS3iiWjUg9ObdtCzEb5OdHquHOdg";
+// ⚠️ WARNING: Using service role key in client-side code is a MAJOR SECURITY RISK
+const SUPABASE_SERVICE_ROLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzaWd6Z2V6c2N0b2t6d2Fib3ZyIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1ODY1NTgzNSwiZXhwIjoyMDc0MjMxODM1fQ.EDIHudlUEGrZTqcqtPzqfVM2JKwlHR7OlVE4CImoX-I";
 
-// Import the supabase client like this:
-// import { supabase } from "@/integrations/supabase/client";
+// Auth client - uses anon key for authentication (magic links, login, etc.)
+export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+// Admin client - uses service role key for admin operations (bypasses RLS)
+export const supabaseAdmin = createClient<Database>(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);

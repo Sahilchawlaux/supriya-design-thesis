@@ -19,7 +19,7 @@ const Success = () => {
   }, []);
   
   return (
-    <div className="bg-cream-light min-h-[80vh] flex items-center justify-center py-16 px-4">
+    <div className="bg-dark-gray min-h-[80vh] flex items-center justify-center py-16 px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg text-center">
         <div className="flex justify-center mb-6">
           <CheckCircle size={64} className="text-gold" />

@@ -65,19 +65,25 @@ export default {
 				},
 				charcoal: {
 					DEFAULT: '#333333',
-					light: '#555555',
+					light: '#D1D5DB',
 					dark: '#1A1A1A'
+				},
+				'dark-gray': {
+					DEFAULT: '#0c0c0c',
+					light: '#1a1a1a',
+					dark: '#000000'
 				}
 			},
 			fontFamily: {
-				sans: ['Avenir', 'Inter', 'system-ui', 'sans-serif'],
-				serif: ['freight-display-pro', 'Playfair Display', 'Georgia', 'serif'],
-				display: ['freight-display-pro', 'Cormorant Garamond', 'serif']
+				sans: ['Inter', 'Avenir', 'system-ui', 'sans-serif'],
+				serif: ['Playfair Display', 'Cormorant Garamond', 'Georgia', 'serif'],
+				display: ['Cormorant Garamond', 'Playfair Display', 'serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				'12': '12px'
 			},
 			keyframes: {
 				'accordion-down': {

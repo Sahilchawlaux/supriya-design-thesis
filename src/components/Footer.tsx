@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
             <h3 className="font-serif text-xl mb-4">The Design Thesis</h3>
-            <p className="text-charcoal-light text-sm max-w-md leading-relaxed">
+            <p className="text-charcoal-dark text-sm max-w-md leading-relaxed">
               Premium digital invitations and stationery designs by Supriya Malik. 
               Crafting beautiful memories with our elegant, customizable templates.
             </p>
@@ -63,12 +63,8 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-charcoal-light/10 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-charcoal-light">
+        <div className="border-t border-charcoal-dark mt-10 pt-6 text-center text-xs text-charcoal-dark">
           <p>© {currentYear} The Design Thesis by Supriya Malik. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
-          </div>
         </div>
       </div>
     </footer>

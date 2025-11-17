@@ -169,7 +169,7 @@ const CollectionDetail = () => {
   return (
     <div className="bg-white">
       {/* Breadcrumb */}
-      <div className="bg-cream-light py-3">
+      <div className="bg-dark-gray-light py-3">
         <div className="container mx-auto px-4">
           <Link to="/collections" className="text-sm flex items-center text-charcoal-light hover:text-gold transition-colors">
             <ArrowLeft size={14} className="mr-2" /> Back to Collections
