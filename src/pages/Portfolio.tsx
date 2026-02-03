@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -40,7 +40,7 @@ const Portfolio = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src={heroBackground}
@@ -63,85 +63,66 @@ const Portfolio = () => {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-20">
-        {isLoading ? (
-          <div className="flex justify-center items-center h-48">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        ) : (
-          <>
-            <div className="flex justify-center mb-12 overflow-x-auto">
-              <div className="flex space-x-2">
-                {categories.map((category) => (
-                  <Button
-                    key={category}
-                    variant={filter === category ? "default" : "outline"}
-                    className={`rounded-12 ${
-                      filter === category
-                        ? "bg-primary text-primary-foreground"
-                        : "text-foreground hover:bg-secondary border-border"
-                    }`}
-                    onClick={() => setFilter(category)}
-                  >
-                    {category}
-                  </Button>
-                ))}
+      <div className="bg-black py-20">
+        <div className="container mx-auto px-4">
+          {isLoading ? (
+            <div className="flex justify-center items-center h-48">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <>
+              <div className="flex justify-center mb-12 overflow-x-auto">
+                <div className="flex space-x-2">
+                  {categories.map((category) => (
+                    <Button
+                      key={category}
+                      variant={filter === category ? "default" : "outline"}
+                      className={`rounded-12 ${
+                        filter === category
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-transparent text-white border border-white/40 hover:bg-white/15 hover:border-white/60 hover:!text-white"
+                      }`}
+                      onClick={() => setFilter(category)}
+                    >
+                      {category}
+                    </Button>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <div className="portfolio-grid">
-              {filteredItems && filteredItems.length > 0 ? (
-                filteredItems.map((item) => (
-                  <Card
-                    key={item.id}
-                    className="portfolio-item overflow-hidden border border-border bg-card rounded-12"
-                  >
-                    <div className="aspect-square overflow-hidden rounded-t-12">
-                      <img
-                        src={item.image_url}
-                        alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                      />
-                    </div>
-                    <CardContent className="p-6">
-                      <h3 className="font-serif text-xl mb-2">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        {item.description}
-                      </p>
-                      <div className="flex gap-2 flex-wrap">
-                        {(() => {
-                          const [mainCategory, subCategory] =
-                            item.category.split(" > ");
-                          return (
-                            <>
-                              <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs rounded-12">
-                                {mainCategory}
-                              </span>
-                              {subCategory && (
-                                <span className="inline-block px-3 py-1 bg-secondary text-xs rounded-12">
-                                  {subCategory}
-                                </span>
-                              )}
-                            </>
-                          );
-                        })()}
+              <div className="portfolio-grid">
+                {filteredItems && filteredItems.length > 0 ? (
+                  filteredItems.map((item) => (
+                    <Card
+                      key={item.id}
+                      className="portfolio-item overflow-hidden border-0 rounded-t-[12px] rounded-b-none bg-black shadow-none"
+                    >
+                      <div className="aspect-[3/5.28] w-[85%] max-w-full mx-auto overflow-hidden rounded-[12px] border border-white/15">
+                        <img
+                          src={item.image_url}
+                          alt={item.title}
+                          className="w-full h-full object-cover object-center block rounded-[12px]"
+                        />
                       </div>
-                    </CardContent>
-                    <CardFooter className="px-6 py-4 bg-secondary/50 flex justify-between items-center">
-                      <Button variant="link" className="text-primary p-0">
-                        View Details
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))
-              ) : (
-                <p className="col-span-full text-center py-12 text-muted-foreground">
-                  No portfolio items found for the selected category.
-                </p>
-              )}
-            </div>
-          </>
-        )}
+                      <CardContent className="p-5 pt-6 pb-6 bg-black text-center rounded-b-none">
+                        <h3 className="text-white text-xl font-bold mb-3 tracking-tight">
+                          {item.title}
+                        </h3>
+                        <span className="inline-block px-4 py-1.5 rounded-full text-sm font-medium text-black bg-[#E8E0D0]">
+                          {item.category}
+                        </span>
+                      </CardContent>
+                    </Card>
+                  ))
+                ) : (
+                  <p className="col-span-full text-center py-12 text-gray-400">
+                    No portfolio items found for the selected category.
+                  </p>
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

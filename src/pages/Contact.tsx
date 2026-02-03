@@ -85,7 +85,7 @@ const ContactPage = () => {
     <div className="bg-dark-gray">
       {/* Hero Section */}
       <motion.section 
-        className="relative py-20 md:py-28 overflow-hidden border-b border-gray-700"
+        className="relative h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -125,7 +125,7 @@ const ContactPage = () => {
       </motion.section>
 
       {/* Contact Information */}
-      <section className="py-20">
+      <section className="pt-11 pb-20">
         <div className="container mx-auto px-4">
           {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start"> */}
             {/* Contact Form */}
@@ -238,8 +238,9 @@ const ContactPage = () => {
               viewport={{ once: true }}
               className="flex flex-col items-center justify-center"
             >
-              <motion.div  variants={fadeInUp}>
-                <h2 className="font-serif text-2xl mb-8">Get in Touch</h2>
+              <motion.div variants={fadeInUp} className="text-center">
+                <h2 className="font-serif text-2xl mb-5">Get in Touch</h2>
+                <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
               </motion.div>
               
               <div className="grid gap-8 ">

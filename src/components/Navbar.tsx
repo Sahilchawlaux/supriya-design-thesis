@@ -87,7 +87,7 @@ const Navbar = () => {
 
         {/* User menu & cart - desktop */}
         <div className="hidden md:flex items-center space-x-8">
-          {user ? (
+          {user && (
             <div className="relative user-menu-container">
               <Button 
                 variant="ghost" 
@@ -120,10 +120,6 @@ const Navbar = () => {
                 </div>
               )}
             </div>
-          ) : (
-            <Link to="/login">
-              <Button variant="outline" className="text-sm uppercase tracking-widest border-gold text-gold hover:bg-gold hover:text-white">Sign In</Button>
-            </Link>
           )}
           
           <Link to="/checkout" className="relative">
@@ -155,7 +151,7 @@ const Navbar = () => {
             variant="ghost" 
             size="sm"
             onClick={() => setIsMenuOpen(!isMenuOpen)} 
-            className="p-1"
+            className="p-1 text-foreground hover:text-primary rounded-full bg-muted hover:bg-muted"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </Button>
@@ -182,7 +178,7 @@ const Navbar = () => {
             ))}
             
             <div className="pt-4 border-t border-border mt-4">
-              {user ? (
+              {user && (
                 <div className="space-y-3">
                   <p className="text-sm font-medium">Signed in as {user.name}</p>
                   {user.isAdmin && (
@@ -212,14 +208,6 @@ const Navbar = () => {
                     Sign Out
                   </Button>
                 </div>
-              ) : (
-                <Link 
-                  to="/login" 
-                  onClick={() => setIsMenuOpen(false)}
-                  className="block text-base uppercase tracking-widest"
-                >
-                  Sign In
-                </Link>
               )}
             </div>
           </div>

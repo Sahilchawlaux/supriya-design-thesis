@@ -149,7 +149,7 @@ const HomePage = () => {
   return (
     <div className="overflow-hidden bg-dark-gray">
       {/* Full-screen Hero Section */}
-      <section className="relative h-[70vh] min-h-[600px] flex items-center justify-center overflow-hidden bg-dark-gray">
+      <section className="relative h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden bg-dark-gray">
         <div className="absolute inset-0 z-0">
           <img
             src={heroBackground}
@@ -172,7 +172,7 @@ const HomePage = () => {
             <p className="text-gray-300 mb-8 text-base md:text-lg max-w-2xl mx-auto">
               {content.hero_subheading}
             </p>
-            <div className="flex justify-center">
+            <div className="flex flex-col items-center">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
@@ -180,28 +180,27 @@ const HomePage = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-gold hover:bg-gold-dark text-white px-12 py-9 text-xl rounded-12 font-medium"
+                  className="bg-gold hover:bg-gold-dark text-white px-9 py-6 text-base rounded-12 font-medium md:px-12 md:py-9 md:text-xl"
                 >
-                  <Link to="/collections">{content.hero_cta_text}</Link>
+                  <Link to="/portfolio">{content.hero_cta_text}</Link>
                 </Button>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 0 }}
+                animate={{ opacity: 1, y: 10 }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
+                className="mt-6 cursor-pointer"
+                onClick={scrollToContent}
+              >
+                <ChevronDown size={36} className="text-gold" />
               </motion.div>
             </div>
           </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: 1, y: 10 }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
-          onClick={scrollToContent}
-        >
-          <ChevronDown size={36} className="text-gold" />
-        </motion.div>
 
         {/* Decorative elements */}
         <div className="absolute top-1/4 right-0 w-64 h-64 bg-gold-light rounded-full opacity-20 -z-10 blur-3xl"></div>
@@ -221,7 +220,7 @@ const HomePage = () => {
             variants={fadeInUp}
             className="text-center mb-12"
           >
-            <h2 className="font-serif text-5xl mb-3 text-white">
+            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl mb-3 text-white">
               Our Designs in Action
             </h2>
             <div className="w-24 h-1 bg-gold mx-auto"></div>
@@ -613,7 +612,7 @@ const HomePage = () => {
               variant="outline"
               className="border-white text-black hover:bg-white/10 hover:text-white rounded-12"
             >
-              <Link to="/collections">{content.cta_button_text}</Link>
+              <Link to="/portfolio">{content.cta_button_text}</Link>
             </Button>
           </motion.div>
         </div>

@@ -31,7 +31,7 @@ const AboutPage = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src={heroBackground} 
