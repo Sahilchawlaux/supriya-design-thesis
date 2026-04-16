@@ -1,12 +1,12 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Clock, 
-  Send, 
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Send,
   CheckCircle,
   Loader2
 } from "lucide-react";
@@ -24,7 +24,7 @@ const ContactPage = () => {
     subject: "",
     message: ""
   });
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -38,15 +38,15 @@ const ContactPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Form validation
     if (!formState.name || !formState.email || !formState.message) {
       toast.error("Please fill out all required fields");
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     // Simulated form submission
     try {
       // Replace with actual API call in production
@@ -84,22 +84,22 @@ const ContactPage = () => {
   return (
     <div className="bg-dark-gray">
       {/* Hero Section */}
-      <motion.section 
+      <motion.section
         className="relative h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
         <div className="absolute inset-0 z-0">
-          <img 
-            src={heroBackground} 
-            alt="Elegant floral background with dark botanical design" 
+          <img
+            src={heroBackground}
+            alt="Elegant floral background with dark botanical design"
             className="w-full h-full object-cover object-center opacity-100"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-dark-gray/60 via-dark-gray/40 to-dark-gray/70"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <motion.h1 
+          <motion.h1
             className="font-display text-4xl md:text-5xl lg:text-6xl mb-6 text-white"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -107,13 +107,13 @@ const ContactPage = () => {
           >
             Contact Us
           </motion.h1>
-          <motion.div 
+          <motion.div
             className="w-24 h-1 bg-gold mx-auto mb-8"
             initial={{ width: 0 }}
             animate={{ width: 96 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           ></motion.div>
-          <motion.p 
+          <motion.p
             className="text-gray-300 max-w-2xl mx-auto text-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -128,8 +128,8 @@ const ContactPage = () => {
       <section className="pt-11 pb-20">
         <div className="container mx-auto px-4">
           {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start"> */}
-            {/* Contact Form */}
-            {/* <motion.div
+          {/* Contact Form */}
+          {/* <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -230,21 +230,21 @@ const ContactPage = () => {
               )}
             </motion.div>
              */}
-            {/* Contact Info */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="flex flex-col items-center justify-center"
-            >
-              <motion.div variants={fadeInUp} className="text-center">
-                <h2 className="font-serif text-2xl mb-5">Get in Touch</h2>
-                <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
-              </motion.div>
-              
-              <div className="grid gap-8 ">
-                {/* <motion.div 
+          {/* Contact Info */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="flex flex-col items-center justify-center"
+          >
+            <motion.div variants={fadeInUp} className="text-center">
+              <h2 className="font-serif text-5xl mb-5">Get in Touch</h2>
+              <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
+            </motion.div>
+
+            <div className="grid gap-8 ">
+              {/* <motion.div 
                   className="flex items-start"
                   variants={fadeInUp}
                 >
@@ -257,52 +257,52 @@ const ContactPage = () => {
                     <p className="text-charcoal-light">support@designthesis.com</p>
                   </div>
                 </motion.div> */}
-                
-                <motion.div 
-                  className="flex items-start"
-                  variants={fadeInUp}
-                >
-                  <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gold-light/30 mr-4">
-                    <Phone className="h-5 w-5 text-gold" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-lg mb-1">Phone</h3>
-                    {/* <p className="text-charcoal-light">+1 (555) 123-4567</p> */}
-                    <p className="text-charcoal-light">+91 9810029889</p>
-                  </div>
-                </motion.div>
-                
-                <motion.div 
-                  className="flex items-start"
-                  variants={fadeInUp}
-                >
-                  <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gold-light/30 mr-4">
-                    <MapPin className="h-5 w-5 text-gold" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-lg mb-1">Location</h3>
-                    {/* <p className="text-charcoal-light">123 Design Street</p> */}
-                    <p className="text-charcoal-light">New Delhi, India</p>
-                  </div>
-                </motion.div>
-                
-                <motion.div 
-                  className="flex items-start"
-                  variants={fadeInUp}
-                >
-                  <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gold-light/30 mr-4">
-                    <Clock className="h-5 w-5 text-gold" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-lg mb-1">Business Hours</h3>
-                    <p className="text-charcoal-light">Monday-Friday: 9am - 6pm</p>
-                    <p className="text-charcoal-light">Saturday: 10am - 4pm</p>
-                    <p className="text-charcoal-light">Sunday: Closed</p>
-                  </div>
-                </motion.div>
-              </div>
-              
-              {/* <motion.div 
+
+              <motion.div
+                className="flex items-start"
+                variants={fadeInUp}
+              >
+                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gold-light/30 mr-4">
+                  <Phone className="h-5 w-5 text-gold" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-lg mb-1">Phone</h3>
+                  {/* <p className="text-charcoal-light">+1 (555) 123-4567</p> */}
+                  <p className="text-charcoal-light">+91 9810029889</p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="flex items-start"
+                variants={fadeInUp}
+              >
+                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gold-light/30 mr-4">
+                  <MapPin className="h-5 w-5 text-gold" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-lg mb-1">Location</h3>
+                  {/* <p className="text-charcoal-light">123 Design Street</p> */}
+                  <p className="text-charcoal-light">New Delhi, India</p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="flex items-start"
+                variants={fadeInUp}
+              >
+                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gold-light/30 mr-4">
+                  <Clock className="h-5 w-5 text-gold" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-lg mb-1">Business Hours</h3>
+                  <p className="text-charcoal-light">Monday-Friday: 9am - 6pm</p>
+                  <p className="text-charcoal-light">Saturday: 10am - 4pm</p>
+                  <p className="text-charcoal-light">Sunday: Closed</p>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* <motion.div 
                 className="mt-12 p-6 bg-white rounded-lg shadow-sm border border-gray-100"
                 variants={fadeInUp}
               >
@@ -314,11 +314,11 @@ const ContactPage = () => {
                   <a href="mailto:custom@designthesis.com">Request Custom Quote</a>
                 </Button>
               </motion.div> */}
-            </motion.div>
+          </motion.div>
           {/* </div> */}
         </div>
       </section>
-      
+
       {/* Map Section
       <motion.section 
         className="py-12 bg-white"
@@ -344,7 +344,7 @@ const ContactPage = () => {
       {/* FAQ Section */}
       <section className="py-20 bg-dark-gray-light">
         <div className="container mx-auto px-4">
-          <motion.div 
+          <motion.div
             className="text-center mb-12"
             initial="hidden"
             whileInView="visible"
@@ -357,8 +357,8 @@ const ContactPage = () => {
               Find answers to our most commonly asked questions. If you can't find what you're looking for, please contact us.
             </p>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
             variants={staggerContainer}
             initial="hidden"
@@ -371,21 +371,21 @@ const ContactPage = () => {
                 We provide video and PDF invitations with or without customized caricatures and logos.
               </p>
             </motion.div>
-            
+
             <motion.div variants={fadeInUp} className="p-6 bg-white rounded-12 shadow-sm">
               <h3 className="font-medium text-charcoal-dark text-xl mb-3">What is your customization timeline?</h3>
               <p className="text-charcoal-dark">
                 5-6 business days for standard designs, 8-9 business days for complex designs.
               </p>
             </motion.div>
-            
+
             <motion.div variants={fadeInUp} className="p-6 bg-white rounded-12 shadow-sm">
               <h3 className="font-medium text-charcoal-dark text-xl mb-3">Can I request revisions?</h3>
               <p className="text-charcoal-dark">
                 Yes, 2 rounds of revisions only for text are included before the final delivery. Any additional revisions may incur extra charges in text or design.
               </p>
             </motion.div>
-            
+
             <motion.div variants={fadeInUp} className="p-6 bg-white rounded-12 shadow-sm">
               <h3 className="font-medium text-charcoal-dark text-xl mb-3">Do you offer rush services and other design services?</h3>
               <p className="text-charcoal-dark">

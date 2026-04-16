@@ -14,14 +14,14 @@ import {
 
 // Mock initial data
 const initialAboutData = {
-  heading: "About The Design Thesis",
+  heading: "About Us",
   tagline: "Creating Elegant Digital Stationery For Your Special Moments",
   mainContent: `The Design Thesis was founded by Supriya Malik in 2019 with a vision to create beautiful, sustainable digital invitations and stationery that don't compromise on elegance or style. 
 
 With over 10 years of experience in graphic design and a passion for creating memorable keepsakes, Supriya's work combines traditional artistic elements with modern digital convenience.
 
 Our designs have been featured in several wedding publications and blogs, and we've helped hundreds of couples and event planners create stunning digital stationery for their special occasions.`,
-  founderImage: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  founderImage: "",
   founderName: "Supriya Malik",
   founderTitle: "Founder & Creative Director",
   founderBio: "Supriya has a background in fine arts and graphic design, with a special interest in typography and traditional illustration techniques. Before founding The Design Thesis, she worked with several high-end stationery brands and event planning companies.",
@@ -258,7 +258,7 @@ const AdminAbout = () => {
               placeholder="Main heading for the page"
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="tagline">Tagline</Label>
             <Input
@@ -269,7 +269,7 @@ const AdminAbout = () => {
               placeholder="A brief tagline or subtitle"
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="mainContent">Main Content</Label>
             <Textarea
@@ -283,7 +283,7 @@ const AdminAbout = () => {
           </div>
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Founder Information</CardTitle>
@@ -300,7 +300,7 @@ const AdminAbout = () => {
                 placeholder="Founder's name"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="founderTitle">Founder Title</Label>
               <Input
@@ -312,7 +312,7 @@ const AdminAbout = () => {
               />
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="founderImage">Founder Image URL</Label>
             <Input
@@ -323,7 +323,7 @@ const AdminAbout = () => {
               placeholder="URL to founder's image"
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="founderBio">Founder Bio</Label>
             <Textarea
@@ -337,13 +337,13 @@ const AdminAbout = () => {
           </div>
         </CardContent>
       </Card>
-      
+
       <Card>
         <CardHeader>
           <CardTitle className="flex justify-between">
             Team Members
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => setShowAddMember(!showAddMember)}
             >
               {showAddMember ? "Cancel" : "Add Team Member"}
@@ -366,7 +366,7 @@ const AdminAbout = () => {
                       placeholder="Team member's name"
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="title">Title</Label>
                     <Input
@@ -378,7 +378,7 @@ const AdminAbout = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="image">Image URL</Label>
                   <Input
@@ -389,7 +389,7 @@ const AdminAbout = () => {
                     placeholder="URL to team member's image"
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="bio">Bio</Label>
                   <Textarea
@@ -401,10 +401,10 @@ const AdminAbout = () => {
                     rows={3}
                   />
                 </div>
-                
+
                 <div className="flex justify-end">
-                  <Button 
-                    className="bg-gold hover:bg-gold-dark text-white" 
+                  <Button
+                    className="bg-gold hover:bg-gold-dark text-white"
                     onClick={handleAddTeamMember}
                   >
                     Add Team Member
@@ -413,7 +413,7 @@ const AdminAbout = () => {
               </div>
             </div>
           )}
-          
+
           {editingMember && (
             <div className="border rounded-md p-6 mb-6">
               <h3 className="text-lg font-medium mb-4">Edit Team Member</h3>
@@ -428,7 +428,7 @@ const AdminAbout = () => {
                       onChange={handleEditMemberChange}
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="edit-title">Title</Label>
                     <Input
@@ -439,7 +439,7 @@ const AdminAbout = () => {
                     />
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="edit-image">Image URL</Label>
                   <Input
@@ -449,7 +449,7 @@ const AdminAbout = () => {
                     onChange={handleEditMemberChange}
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="edit-bio">Bio</Label>
                   <Textarea
@@ -460,16 +460,16 @@ const AdminAbout = () => {
                     rows={3}
                   />
                 </div>
-                
+
                 <div className="flex justify-between">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={() => setEditingMember(null)}
                   >
                     Cancel
                   </Button>
-                  <Button 
-                    className="bg-gold hover:bg-gold-dark text-white" 
+                  <Button
+                    className="bg-gold hover:bg-gold-dark text-white"
                     onClick={handleSaveEditMember}
                   >
                     Save Changes
@@ -478,21 +478,21 @@ const AdminAbout = () => {
               </div>
             </div>
           )}
-          
+
           <div className="space-y-4">
             {aboutData.teamMembers.length === 0 ? (
               <p className="text-center py-8 text-muted-foreground">No team members added yet.</p>
             ) : (
               aboutData.teamMembers.map((member) => (
-                <div 
-                  key={member.id} 
+                <div
+                  key={member.id}
                   className="flex items-start justify-between p-4 border rounded-md"
                 >
                   <div className="flex items-center">
                     <div className="w-16 h-16 rounded-full overflow-hidden mr-4">
-                      <img 
-                        src={member.image} 
-                        alt={member.name} 
+                      <img
+                        src={member.image}
+                        alt={member.name}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -502,17 +502,17 @@ const AdminAbout = () => {
                       <p className="text-sm mt-1">{member.bio}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex space-x-2">
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       size="sm"
                       onClick={() => setEditingMember(member)}
                     >
                       Edit
                     </Button>
-                    <Button 
-                      variant="destructive" 
+                    <Button
+                      variant="destructive"
                       size="sm"
                       onClick={() => handleDeleteTeamMember(member.id)}
                     >

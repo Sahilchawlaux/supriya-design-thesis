@@ -1,8 +1,19 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 import { AuthProvider } from "./contexts/AuthContext";
 import { CartProvider } from "./contexts/CartContext";
 
@@ -49,6 +60,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<MainLayout />}>
@@ -63,7 +75,7 @@ const App = () => (
                 <Route path="success" element={<Success />} />
                 <Route path="login" element={<Login />} />
               </Route>
-              
+
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
@@ -73,7 +85,7 @@ const App = () => (
                 <Route path="about" element={<AdminAbout />} />
                 <Route path="home" element={<AdminHome />} />
               </Route>
-              
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

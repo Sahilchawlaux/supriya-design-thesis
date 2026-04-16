@@ -6,7 +6,20 @@ import heroBackground from "@/assets/hero-background.jpg";
 import { usePublicAboutContent } from "@/hooks/usePublicAboutContent";
 
 const AboutPage = () => {
-  const { data: aboutContent } = usePublicAboutContent();
+  const { data: aboutContent, isLoading } = usePublicAboutContent();
+
+  useEffect(() => {
+    // Scroll to top when the component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold"></div>
+      </div>
+    );
+  }
 
   const defaultAbout = {
     heading: "About Us",
@@ -23,19 +36,14 @@ const AboutPage = () => {
 
   const content = aboutContent || defaultAbout;
 
-  useEffect(() => {
-    // Scroll to top when the component mounts
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden py-24">
         <div className="absolute inset-0 z-0">
-          <img 
-            src={heroBackground} 
-            alt="Elegant floral background with dark botanical design" 
+          <img
+            src={heroBackground}
+            alt="Elegant floral background with dark botanical design"
             className="w-full h-full object-cover object-center opacity-100"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-dark-gray/60 via-dark-gray/40 to-dark-gray/70"></div>
@@ -55,9 +63,9 @@ const AboutPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="relative">
               <div className="absolute -top-6 -left-6 w-[95%] h-[100%] border-4 border-gold rounded-12"></div>
-              <img 
+              <img
                 src={content.founderImage || ProfileImage}
-                alt={content.founderName} 
+                alt={content.founderName}
                 className="rounded-12 shadow-lg w-[95%] h-[95%] object-cover"
               />
             </div>
@@ -65,19 +73,19 @@ const AboutPage = () => {
             <div>
               <h2 className="font-serif text-3xl mb-6">Meet {content.founderName}</h2>
               <div className="w-12 h-1 bg-gold mb-6"></div>
-              
+
               <p className="mb-4 text-charcoal-light">{content.founderBio}</p>
-              
+
               <p className="mb-6 text-charcoal-light">
-              Having collaborated with more than 300 clients, we bring a meticulous eye for detail and a modern aesthetic to every project. Our work harmoniously blends traditional elegance with the convenience of digital sharing, ensuring each piece can be tailored to reflect your unique style.
-              
+                Having collaborated with more than 300 clients, we bring a meticulous eye for detail and a modern aesthetic to every project. Our work harmoniously blends traditional elegance with the convenience of digital sharing, ensuring each piece can be tailored to reflect your unique style.
+
               </p>
-              
+
               <p className="italic font-serif text-lg mb-6">
-              "Our goal is to create designs that capture the essence of each client’s vision while delivering the ease of digital sharing. We believe unique design should be accessible to everyone."
-              
+                "Our goal is to create designs that capture the essence of each client’s vision while delivering the ease of digital sharing. We believe unique design should be accessible to everyone."
+
               </p>
-              
+
               <p className="font-medium">— {content.founderName}, {content.founderTitle || "Founder"}</p>
             </div>
           </div>
@@ -89,11 +97,11 @@ const AboutPage = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-serif text-3xl mb-3 text-white">Our Mission</h2>
           <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
-          
+
           <p className="max-w-2xl mx-auto mb-12 text-lg">
             We believe beautiful design should be accessible, sustainable, and personal.
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div>
               <div className="h-20 flex items-center justify-center mb-6">
@@ -104,11 +112,11 @@ const AboutPage = () => {
               <h3 className="font-serif text-xl mb-3">Accessibility</h3>
               <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
               <p className="text-charcoal-light">
-                We believe beautiful design should be accessible to all couples, regardless of budget. Digital invitations 
+                We believe beautiful design should be accessible to all couples, regardless of budget. Digital invitations
                 allow us to offer premium designs at accessible price points.
               </p>
             </div>
-            
+
             <div>
               <div className="h-20 flex items-center justify-center mb-6">
                 <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -119,11 +127,11 @@ const AboutPage = () => {
               <h3 className="font-serif text-xl mb-3">Sustainability</h3>
               <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
               <p className="text-charcoal-light">
-                Digital invitations reduce paper waste and carbon emissions associated with traditional print stationery, 
+                Digital invitations reduce paper waste and carbon emissions associated with traditional print stationery,
                 allowing couples to celebrate their love while honoring our planet.
               </p>
             </div>
-            
+
             <div>
               <div className="h-20 flex items-center justify-center mb-6">
                 <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -133,8 +141,8 @@ const AboutPage = () => {
               </div>
               <h3 className="font-serif text-xl mb-3">Personalization</h3>
               <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
-                    <p className="text-charcoal-light">
-                We craft every template to be fully customizable, ensuring your invitations reflect your unique style 
+              <p className="text-charcoal-light">
+                We craft every template to be fully customizable, ensuring your invitations reflect your unique style
                 and story while maintaining the elegance of professional design.
               </p>
             </div>
@@ -149,7 +157,7 @@ const AboutPage = () => {
             <h2 className="font-serif text-4xl mb-3 text-white">Terms and Conditions</h2>
             <div className="w-24 h-1 bg-gold mx-auto"></div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Payment Terms and Important Notes Card */}
             <div className="bg-[#1a1a1a] rounded-2xl p-8 shadow-lg border border-gray-800 h-full">
@@ -165,7 +173,7 @@ const AboutPage = () => {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0"></div>
-                  <p className="text-gray-400 font-medium text-left">Payment modes: Cash Deposit, UPI, Bank Transfer or PayPal(CAD)</p>
+                  <p className="text-gray-400 font-medium text-left">Payment modes: Cash Deposit, UPI, Bank Transfer</p>
                 </div>
               </div>
 
@@ -180,23 +188,23 @@ const AboutPage = () => {
               <h3 className="font-serif text-2xl mb-6 text-white text-center">Additional Terms</h3>
               <div className="grid gap-4">
                 <div className="flex items-start gap-4">
-                <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0"></div>
+                  <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0"></div>
                   <p className="text-gray-400 font-medium text-left">Photo Quality: Please provide clear, filter-free photos for customized caricatures.</p>
                 </div>
                 <div className="flex items-start gap-4">
-                <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0"></div>
+                  <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0"></div>
                   <p className="text-gray-400 font-medium text-left">Changes: Additional charges apply for changes to caricature faces or extensive rework.</p>
                 </div>
                 <div className="flex items-start gap-4">
-                <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0"></div>
+                  <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0"></div>
                   <p className="text-gray-400 font-medium text-left">Text Changes: Up to 2 minor text changes are allowed; further changes incur extra charges.</p>
                 </div>
                 <div className="flex items-start gap-4">
-                <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0"></div>
+                  <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0"></div>
                   <p className="text-gray-400 font-medium text-left">Video Animation: Designs will be provided in PDF format for proofreading before animation.</p>
                 </div>
                 <div className="flex items-start gap-4">
-                <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0"></div>
+                  <div className="w-2 h-2 rounded-full bg-gold flex-shrink-0"></div>
                   <p className="text-gray-400 font-medium text-left">References: Please provide references for e-invite designs to ensure we meet your requirements and tastes.</p>
                 </div>
               </div>
@@ -210,11 +218,11 @@ const AboutPage = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="font-display text-3xl mb-6">Ready to Start Your Design Journey?</h2>
           <p className="max-w-xl mx-auto mb-8">
-            Explore our collection of premium digital wedding invitation designs and find the perfect match for your special day.
+            Explore our bespoke digital wedding invites crafted just for your special day.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild variant="outline" className="border-white bg-white text-gold hover:bg-white/10 hover:text-white rounded-12">
-              <Link to="/collections">
+              <Link to="/Portfolio">
                 Browse Collections
               </Link>
             </Button>

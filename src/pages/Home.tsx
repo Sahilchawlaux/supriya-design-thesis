@@ -99,7 +99,7 @@ const HomePage = () => {
       "https://images.unsplash.com/photo-1641317136698-284db1e10c1b?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGJlYXV0aWZ1bCUyMHdlZGRpbmclMjBpbnZpdGF0aW9uc3xlbnwwfHwwfHx8MA%3D%3D",
     cta_heading: "Ready to Create Something Beautiful?",
     cta_description:
-      "Explore our collection of premium digital wedding invitation designs and find the perfect match for your special day.",
+      "Explore our bespoke digital wedding invites crafted just for your special day.",
     cta_button_text: "Browse Collections",
   };
 
@@ -149,7 +149,7 @@ const HomePage = () => {
   return (
     <div className="overflow-hidden bg-dark-gray">
       {/* Full-screen Hero Section */}
-      <section className="relative h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden bg-dark-gray">
+      <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden bg-dark-gray py-24">
         <div className="absolute inset-0 z-0">
           <img
             src={heroBackground}

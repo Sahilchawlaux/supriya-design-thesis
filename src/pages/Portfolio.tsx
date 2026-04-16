@@ -63,7 +63,7 @@ const Portfolio = () => {
         </div>
       </section>
 
-      <div className="bg-black py-20">
+      <div className="bg-[#0C0C0C] py-20">
         <div className="container mx-auto px-4">
           {isLoading ? (
             <div className="flex justify-center items-center h-48">
@@ -95,7 +95,7 @@ const Portfolio = () => {
                   filteredItems.map((item) => (
                     <Card
                       key={item.id}
-                      className="portfolio-item overflow-hidden border-0 rounded-t-[12px] rounded-b-none bg-black shadow-none"
+                      className="portfolio-item overflow-hidden border-0 rounded-t-[12px] rounded-b-none bg-[#0C0C0C] shadow-none"
                     >
                       <div className="aspect-[3/5.28] w-[85%] max-w-full mx-auto overflow-hidden rounded-[12px] border border-white/15">
                         <img
@@ -104,7 +104,7 @@ const Portfolio = () => {
                           className="w-full h-full object-cover object-center block rounded-[12px]"
                         />
                       </div>
-                      <CardContent className="p-5 pt-6 pb-6 bg-black text-center rounded-b-none">
+                      <CardContent className="p-5 pt-6 pb-6 bg-[#0C0C0C] text-center rounded-b-none">
                         <h3 className="text-white text-xl font-bold mb-3 tracking-tight">
                           {item.title}
                         </h3>

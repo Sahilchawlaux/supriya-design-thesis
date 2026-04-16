@@ -140,18 +140,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         try {
           const res = await supabase.auth.getSession();
           session = res.data?.session || null;
+          
+          if (res.error) {
+            console.error("[initAuth] getSession error:", res.error);
+            await supabase.auth.signOut();
+            setUser(null);
+            return;
+          }
         } catch (err) {
           console.warn(
             "[initAuth] getSession failed, skipping direct session check:",
             err
           );
-        }
-
-        if (error) {
-          console.error("[initAuth] getSession error:", error);
-          await supabase.auth.signOut();
-          setUser(null);
-          return;
         }
 
         if (!session) {

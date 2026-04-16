@@ -49,7 +49,7 @@ const defaultHomeContent = {
     "https://images.unsplash.com/photo-1641317136698-284db1e10c1b?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGJlYXV0aWZ1bCUyMHdlZGRpbmclMjBpbnZpdGF0aW9uc3xlbnwwfHwwfHx8MA%3D%3D",
   cta_heading: "Ready to Create Something Beautiful?",
   cta_description:
-    "Explore our collection of premium digital wedding invitation designs and find the perfect match for your special day.",
+    "Explore our bespoke digital wedding invites crafted just for your special day.",
   cta_button_text: "Browse Collections",
 };
 
@@ -99,19 +99,19 @@ const AdminHome = () => {
 
     const contentData = homeContent
       ? {
-          hero_heading: homeContent.hero_heading,
-          hero_subheading: homeContent.hero_subheading,
-          hero_cta_text: homeContent.hero_cta_text,
-          process_heading: homeContent.process_heading,
-          process_description: homeContent.process_description,
-          unforgettable_heading: homeContent.unforgettable_heading,
-          unforgettable_description: homeContent.unforgettable_description,
-          unforgettable_button_text: homeContent.unforgettable_button_text,
-          unforgettable_image: homeContent.unforgettable_image,
-          cta_heading: homeContent.cta_heading,
-          cta_description: homeContent.cta_description,
-          cta_button_text: homeContent.cta_button_text,
-        }
+        hero_heading: homeContent.hero_heading,
+        hero_subheading: homeContent.hero_subheading,
+        hero_cta_text: homeContent.hero_cta_text,
+        process_heading: homeContent.process_heading,
+        process_description: homeContent.process_description,
+        unforgettable_heading: homeContent.unforgettable_heading,
+        unforgettable_description: homeContent.unforgettable_description,
+        unforgettable_button_text: homeContent.unforgettable_button_text,
+        unforgettable_image: homeContent.unforgettable_image,
+        cta_heading: homeContent.cta_heading,
+        cta_description: homeContent.cta_description,
+        cta_button_text: homeContent.cta_button_text,
+      }
       : defaultHomeContent;
 
     setFormData(contentData);
@@ -247,13 +247,12 @@ const AdminHome = () => {
 
     return (
       <div
-        className={`text-xs mt-1 ${
-          isOverLimit
+        className={`text-xs mt-1 ${isOverLimit
             ? "text-red-500"
             : isNearLimit
-            ? "text-yellow-500"
-            : "text-gray-500"
-        }`}
+              ? "text-yellow-500"
+              : "text-gray-500"
+          }`}
       >
         {value.length}/{limit} characters {isOverLimit && "(Exceeds limit!)"}
       </div>
