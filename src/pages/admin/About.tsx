@@ -25,6 +25,8 @@ Our designs have been featured in several wedding publications and blogs, and we
   founderName: "Supriya Malik",
   founderTitle: "Founder & Creative Director",
   founderBio: "Supriya has a background in fine arts and graphic design, with a special interest in typography and traditional illustration techniques. Before founding The Design Thesis, she worked with several high-end stationery brands and event planning companies.",
+  founderDescription: "Having collaborated with more than 300 clients, we bring a meticulous eye for detail and a modern aesthetic to every project. Our work harmoniously blends traditional elegance with the convenience of digital sharing, ensuring each piece can be tailored to reflect your unique style.",
+  founderQuote: "Our goal is to create designs that capture the essence of each client’s vision while delivering the ease of digital sharing. We believe unique design should be accessible to everyone.",
   teamMembers: [
     {
       id: "1",
@@ -59,6 +61,8 @@ interface AboutData {
   founderName: string;
   founderTitle: string;
   founderBio: string;
+  founderDescription: string;
+  founderQuote: string;
   teamMembers: TeamMember[];
 }
 
@@ -104,6 +108,8 @@ const AdminAbout = () => {
         founderName: aboutContent.founderName,
         founderTitle: aboutContent.founderTitle,
         founderBio: aboutContent.founderBio,
+        founderDescription: aboutContent.founderDescription || "",
+        founderQuote: aboutContent.founderQuote || "",
         teamMembers: aboutContent.teamMembers || [],
       });
     }
@@ -149,6 +155,8 @@ const AdminAbout = () => {
             founderName: aboutData.founderName,
             founderTitle: aboutData.founderTitle,
             founderBio: aboutData.founderBio,
+            founderDescription: aboutData.founderDescription,
+            founderQuote: aboutData.founderQuote,
             teamMembers: aboutData.teamMembers,
           },
         });
@@ -161,6 +169,8 @@ const AdminAbout = () => {
           founderName: aboutData.founderName,
           founderTitle: aboutData.founderTitle,
           founderBio: aboutData.founderBio,
+          founderDescription: aboutData.founderDescription,
+          founderQuote: aboutData.founderQuote,
           teamMembers: aboutData.teamMembers,
         });
       }
@@ -325,13 +335,37 @@ const AdminAbout = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="founderBio">Founder Bio</Label>
+            <Label htmlFor="founderBio">Founder Bio (Paragraph 1)</Label>
             <Textarea
               id="founderBio"
               name="founderBio"
               value={aboutData.founderBio}
               onChange={handleInputChange}
               placeholder="Brief biography of the founder"
+              rows={4}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="founderDescription">Founder Description (Paragraph 2)</Label>
+            <Textarea
+              id="founderDescription"
+              name="founderDescription"
+              value={aboutData.founderDescription}
+              onChange={handleInputChange}
+              placeholder="Experience and details"
+              rows={4}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="founderQuote">Founder Quote (Paragraph 3)</Label>
+            <Textarea
+              id="founderQuote"
+              name="founderQuote"
+              value={aboutData.founderQuote}
+              onChange={handleInputChange}
+              placeholder="A quote or vision statement"
               rows={4}
             />
           </div>

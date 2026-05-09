@@ -32,6 +32,10 @@ const AboutPage = () => {
     founderTitle: "Founder",
     founderBio:
       "With over 8 years of experience in graphic design and a passion for creating bespoke, personalised digital invitations and stationery, Supriya Malik founded The Design Thesis in 2021 with a vision to make premium invitations both accessible and environmentally conscious.",
+    founderDescription:
+      "Having collaborated with more than 300 clients, we bring a meticulous eye for detail and a modern aesthetic to every project. Our work harmoniously blends traditional elegance with the convenience of digital sharing, ensuring each piece can be tailored to reflect your unique style.",
+    founderQuote:
+      "Our goal is to create designs that capture the essence of each client’s vision while delivering the ease of digital sharing. We believe unique design should be accessible to everyone.",
   };
 
   const content = aboutContent || defaultAbout;
@@ -77,13 +81,11 @@ const AboutPage = () => {
               <p className="mb-4 text-charcoal-light">{content.founderBio}</p>
 
               <p className="mb-6 text-charcoal-light">
-                Having collaborated with more than 300 clients, we bring a meticulous eye for detail and a modern aesthetic to every project. Our work harmoniously blends traditional elegance with the convenience of digital sharing, ensuring each piece can be tailored to reflect your unique style.
-
+                {content.founderDescription}
               </p>
 
               <p className="italic font-serif text-lg mb-6">
-                "Our goal is to create designs that capture the essence of each client’s vision while delivering the ease of digital sharing. We believe unique design should be accessible to everyone."
-
+                "{content.founderQuote}"
               </p>
 
               <p className="font-medium">— {content.founderName}, {content.founderTitle || "Founder"}</p>

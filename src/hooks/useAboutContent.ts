@@ -20,6 +20,8 @@ export type AboutContent = {
   founderName: string;
   founderTitle: string;
   founderBio: string;
+  founderDescription?: string;
+  founderQuote?: string;
   teamMembers: TeamMember[];
   created_at?: string;
 };
@@ -55,6 +57,8 @@ export const useAboutContent = () => {
         founderName: (data as any).founder_name ?? (data as any).founderName,
         founderTitle: (data as any).founder_title ?? (data as any).founderTitle,
         founderBio: (data as any).founder_bio ?? (data as any).founderBio,
+        founderDescription: (data as any).founder_description ?? (data as any).founderDescription,
+        founderQuote: (data as any).founder_quote ?? (data as any).founderQuote,
         teamMembers: (data as any).team_members ?? (data as any).teamMembers ?? [],
         created_at: (data as any).created_at,
       };
@@ -79,6 +83,8 @@ export const useCreateAboutContent = () => {
         founder_name: content.founderName,
         founder_title: content.founderTitle,
         founder_bio: content.founderBio,
+        founder_description: content.founderDescription,
+        founder_quote: content.founderQuote,
         team_members: content.teamMembers,
       } as const;
 
@@ -126,6 +132,8 @@ export const useUpdateAboutContent = () => {
       if (updates.founderName !== undefined) payload.founder_name = updates.founderName;
       if (updates.founderTitle !== undefined) payload.founder_title = updates.founderTitle;
       if (updates.founderBio !== undefined) payload.founder_bio = updates.founderBio;
+      if (updates.founderDescription !== undefined) payload.founder_description = updates.founderDescription;
+      if (updates.founderQuote !== undefined) payload.founder_quote = updates.founderQuote;
       if (updates.teamMembers !== undefined) payload.team_members = updates.teamMembers;
 
       const { data, error } = await (supabaseAdmin as any)

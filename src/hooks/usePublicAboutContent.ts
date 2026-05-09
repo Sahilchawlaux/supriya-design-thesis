@@ -18,6 +18,8 @@ export type PublicAboutContent = {
   founderName: string;
   founderTitle: string;
   founderBio: string;
+  founderDescription?: string;
+  founderQuote?: string;
   teamMembers: TeamMember[];
 };
 
@@ -48,6 +50,8 @@ export const usePublicAboutContent = () => {
         founderName: (data as any).founder_name ?? (data as any).founderName,
         founderTitle: (data as any).founder_title ?? (data as any).founderTitle,
         founderBio: (data as any).founder_bio ?? (data as any).founderBio,
+        founderDescription: (data as any).founder_description ?? (data as any).founderDescription,
+        founderQuote: (data as any).founder_quote ?? (data as any).founderQuote,
         teamMembers: (data as any).team_members ?? (data as any).teamMembers ?? [],
       };
 
