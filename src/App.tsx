@@ -46,8 +46,8 @@ import AdminHome from "./pages/admin/Home";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: true,
-      staleTime: 1000 * 60, // 1 minute
+      refetchOnWindowFocus: false, // Disabled to prevent unnecessary refetches on focus
+      staleTime: 1000 * 60 * 5, // 5 minutes
     },
   },
 });

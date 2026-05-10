@@ -13,6 +13,17 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -99,21 +110,7 @@ const AdminPortfolio = () => {
 
       if (error) throw error;
 
-      // Get signed URLs for images
-      const itemsWithUrls = await Promise.all(
-        data.map(async (item: PortfolioItem) => {
-          if (item.image_path) {
-            const { data: urlData } = await supabaseAdmin.storage
-              .from("portfolio")
-              .createSignedUrl(item.image_path, 3600); // 1 hour URL
-            return { ...item, image_url: urlData?.signedUrl };
-          }
-          return item;
-        })
-      );
-
-      setPortfolioItems(itemsWithUrls);
-      setPortfolioItems(data);
+      setPortfolioItems(data || []);
     } catch (error) {
       console.error("Error fetching portfolio items:", error);
       toast.error("Failed to load portfolio items");
@@ -295,13 +292,15 @@ const AdminPortfolio = () => {
   };
 
   // Handle item deletion
-  const handleDeleteItem = async (id: string, imagePath: string) => {
-    if (!window.confirm("Are you sure you want to delete this item?")) return;
-
+  const handleDeleteItem = async (id: string, imagePath?: string) => {
     try {
-      // Delete image from storage
+      // Try to delete image from storage using the official Storage API
       if (imagePath) {
-        await deleteImage(imagePath);
+        try {
+          await deleteImage(imagePath);
+        } catch (storageError) {
+          console.warn("Failed to delete image from storage, proceeding to delete record:", storageError);
+        }
       }
 
       // Delete item from database
@@ -314,7 +313,7 @@ const AdminPortfolio = () => {
 
       // Update local state
       setPortfolioItems(portfolioItems.filter((item) => item.id !== id));
-      toast.success("Portfolio item deleted successfully");
+      toast.success("The file has been deleted");
     } catch (error) {
       console.error("Error deleting portfolio item:", error);
       toast.error("Failed to delete portfolio item");
@@ -354,49 +353,7 @@ const AdminPortfolio = () => {
     };
   }, [imagePreview]);
 
-  // Handle delete item
-  const handleDelete = async (id: string, imagePath?: string) => {
-    if (!confirm("Are you sure you want to delete this item?")) return;
 
-    try {
-      // Delete the image from storage if it exists
-      if (imagePath) {
-        const { error: storageError } = await supabaseAdmin.storage
-          .from("portfolio")
-          .remove([imagePath]);
-
-        if (storageError) throw storageError;
-      }
-
-      // Delete the item from the database
-      const { error } = await supabaseAdmin
-        .from("portfolio_items")
-        .delete()
-        .eq("id", id);
-
-      if (error) throw error;
-
-      // Update the UI
-      setPortfolioItems(portfolioItems.filter((item) => item.id !== id));
-      toast.success("Portfolio item deleted successfully");
-    } catch (error) {
-      console.error("Error deleting portfolio item:", error);
-      toast.error("Failed to delete portfolio item");
-    }
-  };
-
-  // Handle edit item
-  const handleEdit = (item: PortfolioItem) => {
-    setEditingItem(item);
-    setFormData({
-      title: item.title,
-      category: item.category,
-      description: item.description || "",
-    });
-    if (item.image_url) {
-      setImagePreview(item.image_url);
-    }
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -583,13 +540,30 @@ const AdminPortfolio = () => {
                 >
                   <Edit className="h-4 w-4 mr-2" /> Edit
                 </Button>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleDeleteItem(item.id, item.image_path)}
-                >
-                  <Trash2 className="h-4 w-4 mr-2" /> Delete
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive" size="sm">
+                      <Trash2 className="h-4 w-4 mr-2" /> Delete
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="text-black">Delete Portfolio Item</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to delete this from your portfolio? This action cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="text-black">Cancel</AlertDialogCancel>
+                      <AlertDialogAction 
+                        onClick={() => handleDeleteItem(item.id, item.image_path)}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        Delete Permanently
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </CardFooter>
             </Card>
           ))}
