@@ -7,9 +7,7 @@ import {
   DollarSign,
   TrendingUp,
   Calendar,
-  Package,
   Eye,
-  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -23,7 +21,6 @@ const AdminDashboard = () => {
   });
 
   const [recentOrders, setRecentOrders] = useState<any[]>([]);
-  const [popularCollections, setPopularCollections] = useState<any[]>([]);
 
   useEffect(() => {
     // Simulate fetching dashboard data
@@ -40,12 +37,6 @@ const AdminDashboard = () => {
         { id: "ORD-1233", customer: "Michael Smith", date: "2025-04-03", total: 74.98, status: "processing" },
         { id: "ORD-1232", customer: "Sarah Williams", date: "2025-04-02", total: 29.99, status: "completed" },
         { id: "ORD-1231", customer: "David Brown", date: "2025-04-01", total: 44.99, status: "completed" },
-      ]);
-
-      setPopularCollections([
-        { id: "1", title: "Elegant Florals", sales: 12, revenue: 479.88 },
-        { id: "2", title: "Modern Minimalist", sales: 9, revenue: 314.91 },
-        { id: "4", title: "Art Deco Glamour", sales: 8, revenue: 359.92 },
       ]);
     }, 500);
   }, []);
@@ -106,8 +97,8 @@ const AdminDashboard = () => {
       </div>
       
       {/* Recent Orders */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <Card className="lg:col-span-2">
+      <div className="grid grid-cols-1 gap-8">
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-xl">Recent Orders</CardTitle>
             <Button variant="ghost" size="sm" className="text-gold">
@@ -147,46 +138,10 @@ const AdminDashboard = () => {
             </div>
           </CardContent>
         </Card>
-        
-        {/* Popular Collections */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-xl">Popular Collections</CardTitle>
-            <Link to="/admin/collections">
-              <Button variant="ghost" size="sm" className="text-gold">
-                <ChevronRight size={16} />
-              </Button>
-            </Link>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              {popularCollections.map((collection) => (
-                <div key={collection.id} className="flex items-center">
-                  <div className="mr-4">
-                    <Package size={24} className="text-gold" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium">{collection.title}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {collection.sales} sales · ${collection.revenue.toFixed(2)} revenue
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
       </div>
       
       {/* Quick Links */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
-        <Link to="/admin/collections">
-          <Button variant="outline" className="w-full justify-start h-auto py-4">
-            <ShoppingBag size={18} className="mr-2 text-gold" />
-            <span>Manage Collections</span>
-          </Button>
-        </Link>
-        
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
         <Link to="/admin/testimonials">
           <Button variant="outline" className="w-full justify-start h-auto py-4">
             <Users size={18} className="mr-2 text-gold" />

@@ -66,6 +66,7 @@ const AdminPortfolio = () => {
     description: "",
   });
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Handle file drop
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
@@ -191,7 +192,7 @@ const AdminPortfolio = () => {
 
     try {
       let imagePath = editingItem?.image_path || "";
-      let imageUrl = "";
+      let imageUrl = editingItem?.image_url || "";
 
       // Upload new image if provided
       if (uploadedFile) {
@@ -275,11 +276,7 @@ const AdminPortfolio = () => {
       console.log("🧹 [handleSubmit] Resetting form and closing dialog...");
       debugger;
       resetForm();
-      (
-        document.querySelector(
-          'button[aria-label="Close"]'
-        ) as HTMLButtonElement
-      )?.click();
+      setIsDialogOpen(false);
     } catch (error: any) {
       console.error("❌ [handleSubmit] Error saving portfolio item:", error);
       toast.error(`Failed to ${editingItem ? "update" : "add"} portfolio item`);
@@ -326,10 +323,11 @@ const AdminPortfolio = () => {
     setFormData({
       title: item.title,
       category: item.category,
-      description: item.description,
+      description: item.description || "",
     });
-    setImagePreview(item.image_url);
+    setImagePreview(item.image_url || null);
     setUploadedFile(null);
+    setIsDialogOpen(true);
   };
 
   // Reset form
@@ -359,7 +357,7 @@ const AdminPortfolio = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Manage Portfolio</h1>
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={resetForm}>
               <Plus className="mr-2 h-4 w-4" /> Add New Item

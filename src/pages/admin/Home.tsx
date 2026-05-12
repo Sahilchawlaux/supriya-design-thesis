@@ -1,11 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { v4 as uuidv4 } from "uuid";
+import { supabaseAdmin } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, Save, AlertCircle, CheckCircle } from "lucide-react";
+import { Loader2, Save, AlertCircle, CheckCircle, Trash2, Upload, X } from "lucide-react";
+import {
+  useCarouselImages,
+  useAddCarouselImage,
+  useDeleteCarouselImage,
+} from "@/hooks/useCarouselImages";
 import {
   useHomeContent,
   useCreateHomeContent,
@@ -61,6 +69,76 @@ const AdminHome = () => {
   } = useHomeContent();
   const createHomeContent = useCreateHomeContent();
   const updateHomeContent = useUpdateHomeContent();
+
+  const { data: carouselImages = [], isLoading: isLoadingCarousel } = useCarouselImages();
+  const addCarouselImage = useAddCarouselImage();
+  const deleteCarouselImage = useDeleteCarouselImage();
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+  const onDropCarousel = useCallback(async (acceptedFiles: File[], fileRejections: any[]) => {
+    if (fileRejections.length > 0) {
+      toast.error("Invalid file. Ensure it's a JPG/PNG and under 2MB.");
+      return;
+    }
+    if (acceptedFiles.length === 0) return;
+    
+    if (carouselImages.length >= 5) {
+      toast.error("Maximum 5 images allowed in the carousel.");
+      return;
+    }
+
+    const file = acceptedFiles[0];
+    setIsUploadingImage(true);
+    const toastId = toast.loading("Uploading image...");
+
+    try {
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${uuidv4()}.${fileExt}`;
+      const filePath = `carousel/${fileName}`;
+
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from("portfolio-images")
+        .upload(filePath, file, { cacheControl: "3600", upsert: false });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabaseAdmin.storage
+        .from("portfolio-images")
+        .getPublicUrl(filePath);
+
+      await addCarouselImage.mutateAsync({
+        image_url: publicUrl,
+        image_path: filePath,
+      });
+
+    } catch (error) {
+      console.error("Upload failed", error);
+      toast.error("Failed to upload image");
+    } finally {
+      setIsUploadingImage(false);
+      toast.dismiss(toastId);
+    }
+  }, [carouselImages.length, addCarouselImage]);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: onDropCarousel,
+    accept: { "image/jpeg": [".jpeg", ".jpg"], "image/png": [".png"] },
+    maxSize: 2 * 1024 * 1024,
+    maxFiles: 1,
+  });
+
+  const handleDeleteCarouselImage = async (id: string, imagePath: string) => {
+    const toastId = toast.loading("Deleting image...");
+    try {
+      await supabaseAdmin.storage.from("portfolio-images").remove([imagePath]);
+      await deleteCarouselImage.mutateAsync(id);
+    } catch (error) {
+      console.error("Delete failed", error);
+      toast.error("Failed to delete image");
+    } finally {
+      toast.dismiss(toastId);
+    }
+  };
 
   const [formData, setFormData] = useState(defaultHomeContent);
   const [originalData, setOriginalData] = useState(defaultHomeContent);
@@ -615,6 +693,63 @@ const AdminHome = () => {
               </div>
             )}
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Our Designs in Action Carousel</CardTitle>
+          <p className="text-sm text-muted-foreground">Manage the images displayed in the infinite scrolling carousel on the home page. Maximum 5 images allowed.</p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div
+            {...getRootProps()}
+            className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
+              isDragActive
+                ? "border-primary bg-secondary/20"
+                : "border-border hover:border-primary/50"
+            } ${carouselImages.length >= 5 || isUploadingImage ? "opacity-50 cursor-not-allowed pointer-events-none" : ""}`}
+          >
+            <input {...getInputProps()} disabled={carouselImages.length >= 5 || isUploadingImage} />
+            <div className="space-y-2">
+              <div className="mx-auto w-12 h-12 bg-muted rounded-full flex items-center justify-center">
+                {isUploadingImage ? <Loader2 className="h-6 w-6 animate-spin text-primary" /> : <Upload className="h-6 w-6" />}
+              </div>
+              <p className="text-sm font-medium">
+                {isDragActive
+                  ? "Drop the image here"
+                  : "Drag & drop an image here, or click to select"}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                JPG, PNG (Max 2MB)
+              </p>
+            </div>
+          </div>
+
+          {isLoadingCarousel ? (
+            <div className="flex justify-center p-8">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : carouselImages.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              {carouselImages.map((img) => (
+                <div key={img.id} className="relative group aspect-[3/4] rounded-lg overflow-hidden border">
+                  <img src={img.image_url} alt="Carousel" className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <Button 
+                      variant="destructive" 
+                      size="icon" 
+                      onClick={() => handleDeleteCarouselImage(img.id, img.image_path)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-center text-muted-foreground py-8">No images uploaded yet.</p>
+          )}
         </CardContent>
       </Card>
     </div>

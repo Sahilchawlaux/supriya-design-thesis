@@ -8,7 +8,6 @@ import {
   Image, 
   MessageSquare, 
   User, 
-  ShoppingBag, 
   LogOut 
 } from "lucide-react";
 
@@ -22,7 +21,6 @@ const AdminSidebar = () => {
     { path: "/admin/about", label: "Edit About Page", icon: <User size={18} /> },
     { path: "/admin/portfolio", label: "Manage Portfolio", icon: <Image size={18} /> },
     { path: "/admin/testimonials", label: "Testimonials", icon: <MessageSquare size={18} /> },
-    { path: "/admin/collections", label: "Digital Collections", icon: <ShoppingBag size={18} /> },
   ];
 
   return (

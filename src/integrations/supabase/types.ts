@@ -105,6 +105,27 @@ export type Database = {
         };
         Relationships: [];
       };
+      home_carousel_images: {
+        Row: {
+          id: string;
+          image_url: string;
+          image_path: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          image_url: string;
+          image_path: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          image_url?: string;
+          image_path?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       order_items: {
         Row: {
           collection_id: string;

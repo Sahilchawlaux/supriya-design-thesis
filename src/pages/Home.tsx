@@ -13,14 +13,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import TestimonialSection from "@/components/TestimonialSection";
 import { motion } from "framer-motion";
-import design1 from "@/assets/designs-home/1.jpg";
-import design2 from "@/assets/designs-home/2.jpg";
-import design3 from "@/assets/designs-home/3.jpg";
-import design4 from "@/assets/designs-home/4.jpg";
-import design5 from "@/assets/designs-home/5.jpg";
 import logoText from "@/assets/design-thesis-logo-text.png";
 import heroBackground from "@/assets/hero-background.jpg";
 import { usePublicHomeContent } from "@/hooks/usePublicHomeContent";
+import { useCarouselImages } from "@/hooks/useCarouselImages";
 
 // Mock data - would come from API in production
 const featuredCollections = [
@@ -51,10 +47,7 @@ const featuredCollections = [
   },
 ];
 
-const designImages = [design1, design2, design3, design4, design5];
-
 const FOCUS_DURATION = 2.5; // seconds per image
-const ANIMATION_DURATION = designImages.length * FOCUS_DURATION;
 
 const IMAGE_WIDTHS = { base: 180, md: 260, lg: 320 };
 
@@ -66,6 +59,7 @@ const getResponsiveImageWidth = () => {
 
 const HomePage = () => {
   const { data: homeContent, isLoading, error } = usePublicHomeContent();
+  const { data: carouselImages = [] } = useCarouselImages();
   const [isVisible, setIsVisible] = useState(false);
   const scrollRef = useRef(null);
   const [carouselIndex, setCarouselIndex] = useState(0);
@@ -108,11 +102,12 @@ const HomePage = () => {
 
   useEffect(() => {
     setIsVisible(true);
+    if (carouselImages.length === 0) return;
     const interval = setInterval(() => {
-      setCarouselIndex((prev) => (prev + 1) % designImages.length);
+      setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
     }, FOCUS_DURATION * 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [carouselImages.length]);
 
   useEffect(() => {
     const updateWidth = () => {
@@ -233,36 +228,42 @@ const HomePage = () => {
             <motion.div
               className="flex gap-8"
               animate={{
-                x: [0, -(designImages.length * (320 + 32))], // 320px width + 32px gap
+                x: [0, -(carouselImages.length * (320 + 32))], // 320px width + 32px gap
               }}
               transition={{
                 x: {
-                  duration: 30,
+                  duration: carouselImages.length > 0 ? carouselImages.length * 6 : 30,
                   repeat: Infinity,
                   ease: "linear",
                   repeatType: "loop",
                 },
               }}
             >
-              {[...designImages, ...designImages, ...designImages].map(
-                (img, index) => (
-                  <motion.div
-                    key={`design-image-${index}`}
-                    className="w-64 md:w-80 lg:w-80 flex-shrink-0"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Card className="overflow-hidden border-none shadow-lg rounded-[16px]">
-                      <div className="relative h-full overflow-hidden rounded-[16px]">
-                        <img
-                          src={img}
-                          alt={`Design ${index + 1}`}
-                          className="w-full h-full object-cover rounded-[16px]"
-                        />
-                      </div>
-                    </Card>
-                  </motion.div>
+              {carouselImages.length > 0 ? (
+                [...carouselImages, ...carouselImages, ...carouselImages].map(
+                  (img, index) => (
+                    <motion.div
+                      key={`design-image-${index}`}
+                      className="w-64 md:w-80 lg:w-80 flex-shrink-0"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Card className="overflow-hidden border-none shadow-lg rounded-[16px]">
+                        <div className="relative h-full overflow-hidden rounded-[16px]">
+                          <img
+                            src={img.image_url}
+                            alt={`Design ${index + 1}`}
+                            className="w-full h-full object-cover rounded-[16px]"
+                          />
+                        </div>
+                      </Card>
+                    </motion.div>
+                  )
                 )
+              ) : (
+                <div className="w-full text-center py-12 text-gray-400">
+                  No images uploaded yet.
+                </div>
               )}
             </motion.div>
           </div>
