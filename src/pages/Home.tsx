@@ -522,18 +522,14 @@ const HomePage = () => {
       {/* Full-width Banner */}
       <motion.section
         className="relative py-32 overflow-hidden"
+        style={{ backgroundColor: '#B8860B' }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 1.2 }}
       >
         <div className="absolute inset-0 z-0">
-          <img
-            src={content.unforgettable_image}
-            alt="Wedding invitation"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-charcoal-dark/50"></div>
+          {/* Background image removed in favor of solid color */}
         </div>
 
         <div className="container mx-auto px-4 relative z-10 text-center">
