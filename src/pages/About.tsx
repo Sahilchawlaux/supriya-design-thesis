@@ -54,7 +54,7 @@ const AboutPage = () => {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto text-center">
-            <h1 className="font-display text-4xl md:text-5xl mb-6 text-white">{content.heading}</h1>
+            <h1 className="font-display text-[32px] mb-6 text-white">{content.heading}</h1>
             <div className="w-48 h-1 bg-gold mx-auto mb-8"></div>
             <p className="text-lg text-gray-300">{content.mainContent || content.tagline}</p>
           </div>
@@ -75,7 +75,7 @@ const AboutPage = () => {
             </div>
 
             <div>
-              <h2 className="font-serif text-3xl mb-6">Meet {content.founderName}</h2>
+              <h2 className="font-serif text-[32px] mb-6">Meet {content.founderName}</h2>
               <div className="w-12 h-1 bg-gold mb-6"></div>
 
               <p className="mb-4 text-charcoal-light">{content.founderBio}</p>
@@ -97,7 +97,7 @@ const AboutPage = () => {
       {/* Our Mission */}
       <section className="py-20 bg-dark-gray-light">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="font-serif text-3xl mb-3 text-white">Our Mission</h2>
+          <h2 className="font-serif text-[32px] mb-3 text-white">Our Mission</h2>
           <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
 
           <p className="max-w-2xl mx-auto mb-12 text-lg">
@@ -156,7 +156,7 @@ const AboutPage = () => {
       <section className="py-20 bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="font-serif text-4xl mb-3 text-white">Terms and Conditions</h2>
+            <h2 className="font-serif text-[32px] mb-3 text-white">Terms and Conditions</h2>
             <div className="w-24 h-1 bg-gold mx-auto"></div>
           </div>
 
@@ -218,7 +218,7 @@ const AboutPage = () => {
       {/* CTA Section */}
       <section className="py-16 bg-gold text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="font-display text-3xl mb-6">Ready to Start Your Design Journey?</h2>
+          <h2 className="font-display text-[32px] mb-6">Ready to Start Your Design Journey?</h2>
           <p className="max-w-xl mx-auto mb-8">
             Explore our bespoke digital wedding invites crafted just for your special day.
           </p>
