@@ -84,12 +84,7 @@ const ContactPage = () => {
   return (
     <div className="bg-dark-gray">
       {/* Hero Section */}
-      <motion.section
-        className="relative h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
+      <section className="relative h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
             src={heroBackground}
@@ -99,30 +94,15 @@ const ContactPage = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-dark-gray/60 via-dark-gray/40 to-dark-gray/70"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <motion.h1
-            className="font-display text-4xl md:text-5xl lg:text-6xl mb-6 text-white"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-6 text-white tracking-tight">
             Contact Us
-          </motion.h1>
-          <motion.div
-            className="w-24 h-1 bg-gold mx-auto mb-8"
-            initial={{ width: 0 }}
-            animate={{ width: 96 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          ></motion.div>
-          <motion.p
-            className="text-gray-300 max-w-2xl mx-auto text-lg"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
+          </h1>
+          <div className="w-48 h-1 bg-gold mx-auto mb-8"></div>
+          <p className="text-gray-300 max-w-2xl mx-auto text-lg">
             We'd love to hear from you. Whether you have a question about our designs, pricing, or anything else, our team is ready to answer all your questions.
-          </motion.p>
+          </p>
         </div>
-      </motion.section>
+      </section>
 
       {/* Contact Information */}
       <section className="pt-11 pb-20">
