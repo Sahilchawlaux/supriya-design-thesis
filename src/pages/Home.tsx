@@ -215,7 +215,7 @@ const HomePage = () => {
             variants={fadeInUp}
             className="text-center mb-12"
           >
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl mb-3 text-white">
+            <h2 className="font-serif text-[20px] mb-3 text-white">
               Our Designs in Action
             </h2>
             <div className="w-24 h-1 bg-gold mx-auto"></div>
@@ -294,7 +294,7 @@ const HomePage = () => {
             variants={fadeInUp}
             className="text-center mb-16"
           >
-            <h2 className="font-serif text-4xl md:text-5xl mb-6 text-white leading-tight">
+            <h2 className="font-serif text-[20px] mb-6 text-white leading-tight">
               {content.process_heading}
             </h2>
             <p className="text-gray-400 text-lg max-w-3xl mx-auto">
@@ -540,7 +540,7 @@ const HomePage = () => {
             transition={{ duration: 0.8 }}
             className="max-w-3xl mx-auto"
           >
-            <h2 className="font-display text-4xl md:text-5xl text-white mb-6">
+            <h2 className="font-display text-[20px] text-white mb-6">
               {content.unforgettable_heading}
             </h2>
             <p className="text-white/90 text-lg mb-8">
@@ -568,7 +568,7 @@ const HomePage = () => {
             variants={fadeInUp}
             className="text-center"
           >
-            <h2 className="font-serif text-3xl mb-3 text-white">Client Love</h2>
+            <h2 className="font-serif text-[20px] mb-3 text-white">Client Love</h2>
             <div className="w-24 h-1 bg-gold mx-auto mb-12"></div>
           </motion.div>
 
@@ -600,7 +600,7 @@ const HomePage = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="font-display text-3xl mb-6">
+            <h2 className="font-display text-[20px] mb-6">
               {content.cta_heading}
             </h2>
             <p className="max-w-xl mx-auto mb-8">{content.cta_description}</p>
