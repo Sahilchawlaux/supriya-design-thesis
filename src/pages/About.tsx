@@ -228,7 +228,7 @@ const AboutPage = () => {
                 Browse Collections
               </Link>
             </Button>
-            <Button asChild className="bg-white text-gold hover:bg-cream rounded-12">
+            <Button asChild variant="outline" className="border-white bg-white text-gold hover:bg-white/10 hover:text-white rounded-12">
               <Link to="/contact">
                 Contact Us
               </Link>
