@@ -94,7 +94,7 @@ const ContactPage = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-dark-gray/60 via-dark-gray/40 to-dark-gray/70"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="font-display text-[32px] mb-6 text-white tracking-tight">
+          <h1 className="font-display text-[38px] mb-6 text-white tracking-tight">
             Contact Us
           </h1>
           <div className="w-48 h-1 bg-gold mx-auto mb-8"></div>
@@ -213,7 +213,7 @@ const ContactPage = () => {
           {/* Contact Info */}
           <div className="flex flex-col items-center justify-center">
             <div className="text-center">
-              <h2 className="font-display text-[32px] mb-5">Get in Touch</h2>
+              <h2 className="font-display text-[38px] mb-5">Get in Touch</h2>
               <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
             </div>
 
@@ -300,7 +300,7 @@ const ContactPage = () => {
             viewport={{ once: true }}
             variants={fadeInUp}
           >
-            <h2 className="font-display text-[32px] mb-3">Frequently Asked Questions</h2>
+            <h2 className="font-display text-[38px] mb-3">Frequently Asked Questions</h2>
             <div className="w-24 h-1 bg-gold mx-auto mb-6"></div>
             <p className="text-charcoal-light max-w-2xl mx-auto">
               Find answers to our most commonly asked questions. If you can't find what you're looking for, please contact us.
