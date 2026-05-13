@@ -263,7 +263,7 @@ const ContactPage = () => {
                   <a href="mailto:custom@designthesis.com">Request Custom Quote</a>
                 </Button>
               </motion.div> */}
-          </motion.div>
+          </div>
           {/* </div> */}
         </div>
       </section>
