@@ -211,65 +211,34 @@ const ContactPage = () => {
             </motion.div>
              */}
           {/* Contact Info */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="flex flex-col items-center justify-center"
-          >
-            <motion.div variants={fadeInUp} className="text-center">
+          <div className="flex flex-col items-center justify-center">
+            <div className="text-center">
               <h2 className="font-serif text-5xl mb-5">Get in Touch</h2>
               <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
-            </motion.div>
+            </div>
 
             <div className="grid gap-8 ">
-              {/* <motion.div 
-                  className="flex items-start"
-                  variants={fadeInUp}
-                >
-                  <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gold-light/30 mr-4">
-                    <Mail className="h-5 w-5 text-gold" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-lg mb-1">Email</h3>
-                    <p className="text-charcoal-light">hello@designthesis.com</p>
-                    <p className="text-charcoal-light">support@designthesis.com</p>
-                  </div>
-                </motion.div> */}
-
-              <motion.div
-                className="flex items-start"
-                variants={fadeInUp}
-              >
+              <div className="flex items-start">
                 <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gold-light/30 mr-4">
                   <Phone className="h-5 w-5 text-gold" />
                 </div>
                 <div>
                   <h3 className="font-medium text-lg mb-1">Phone</h3>
-                  {/* <p className="text-charcoal-light">+1 (555) 123-4567</p> */}
                   <p className="text-charcoal-light">+91 9810029889</p>
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div
-                className="flex items-start"
-                variants={fadeInUp}
-              >
+              <div className="flex items-start">
                 <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gold-light/30 mr-4">
                   <MapPin className="h-5 w-5 text-gold" />
                 </div>
                 <div>
                   <h3 className="font-medium text-lg mb-1">Location</h3>
-                  {/* <p className="text-charcoal-light">123 Design Street</p> */}
                   <p className="text-charcoal-light">New Delhi, India</p>
                 </div>
-              </motion.div>
+              </div>
 
-              <motion.div
-                className="flex items-start"
-                variants={fadeInUp}
-              >
+              <div className="flex items-start">
                 <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gold-light/30 mr-4">
                   <Clock className="h-5 w-5 text-gold" />
                 </div>
@@ -279,7 +248,7 @@ const ContactPage = () => {
                   <p className="text-charcoal-light">Saturday: 10am - 4pm</p>
                   <p className="text-charcoal-light">Sunday: Closed</p>
                 </div>
-              </motion.div>
+              </div>
             </div>
 
             {/* <motion.div 
