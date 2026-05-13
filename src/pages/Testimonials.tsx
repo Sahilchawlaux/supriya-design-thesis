@@ -159,7 +159,7 @@ const TestimonialsPage = () => {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center">
-            <h1 className="text-4xl font-serif mb-4 text-white">
+            <h1 className="text-[32px] font-serif mb-4 text-white">
               Client Testimonials
             </h1>
             <div className="w-48 h-1 bg-gold mx-auto mb-8"></div>
@@ -257,7 +257,7 @@ const TestimonialsPage = () => {
           </div>
         </div>
         <div className="max-w-xl mx-auto mt-16 mb-20">
-          <h2 className="text-2xl font-serif mb-4 text-center">
+          <h2 className="text-[32px] font-serif mb-4 text-center">
             Add Your Review
           </h2>
           <form
