@@ -75,7 +75,7 @@ const AboutPage = () => {
             </div>
 
             <div>
-              <h2 className="font-serif text-[32px] mb-6">Meet {content.founderName}</h2>
+              <h2 className="font-display text-[32px] mb-6">Meet {content.founderName}</h2>
               <div className="w-12 h-1 bg-gold mb-6"></div>
 
               <p className="mb-4 text-charcoal-light">{content.founderBio}</p>
@@ -97,7 +97,7 @@ const AboutPage = () => {
       {/* Our Mission */}
       <section className="py-20 bg-dark-gray-light">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="font-serif text-[32px] mb-3 text-white">Our Mission</h2>
+          <h2 className="font-display text-[32px] mb-3 text-white">Our Mission</h2>
           <div className="w-24 h-1 bg-gold mx-auto mb-8"></div>
 
           <p className="max-w-2xl mx-auto mb-12 text-lg">
@@ -156,7 +156,7 @@ const AboutPage = () => {
       <section className="py-20 bg-dark-gray">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="font-serif text-[32px] mb-3 text-white">Terms and Conditions</h2>
+            <h2 className="font-display text-[32px] mb-3 text-white">Terms and Conditions</h2>
             <div className="w-24 h-1 bg-gold mx-auto"></div>
           </div>
 

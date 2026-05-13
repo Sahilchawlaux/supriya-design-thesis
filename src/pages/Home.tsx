@@ -215,7 +215,7 @@ const HomePage = () => {
             variants={fadeInUp}
             className="text-center mb-12"
           >
-            <h2 className="font-serif text-[32px] mb-3 text-white">
+            <h2 className="font-display text-[32px] mb-3 text-white">
               Our Designs in Action
             </h2>
             <div className="w-24 h-1 bg-gold mx-auto"></div>
@@ -294,7 +294,7 @@ const HomePage = () => {
             variants={fadeInUp}
             className="text-center mb-16"
           >
-            <h2 className="font-serif text-[32px] mb-6 text-white leading-tight">
+            <h2 className="font-display text-[32px] mb-6 text-white leading-tight">
               {content.process_heading}
             </h2>
             <p className="text-gray-400 text-lg max-w-3xl mx-auto">
@@ -568,7 +568,7 @@ const HomePage = () => {
             variants={fadeInUp}
             className="text-center"
           >
-            <h2 className="font-serif text-[32px] mb-3 text-white">Client Love</h2>
+            <h2 className="font-display text-[32px] mb-3 text-white">Client Love</h2>
             <div className="w-24 h-1 bg-gold mx-auto mb-12"></div>
           </motion.div>
 
