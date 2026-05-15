@@ -8,7 +8,8 @@ import {
   Image, 
   MessageSquare, 
   User, 
-  LogOut 
+  LogOut,
+  ExternalLink
 } from "lucide-react";
 
 const AdminSidebar = () => {
@@ -48,7 +49,17 @@ const AdminSidebar = () => {
         </nav>
       </div>
       
-      <div className="p-4 border-t border-white/10">
+      <div className="p-4 border-t border-white/10 space-y-2">
+        <Link to="/" className="w-full">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start text-white/80 hover:text-white"
+          >
+            <ExternalLink size={18} className="mr-2" />
+            View Website
+          </Button>
+        </Link>
+        
         <Button 
           variant="ghost" 
           className="w-full justify-start text-white/80 hover:text-white"

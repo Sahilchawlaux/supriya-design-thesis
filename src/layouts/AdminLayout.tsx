@@ -15,9 +15,9 @@ const AdminLayout = () => {
   }
 
   // Redirect to login if not authenticated or not an admin
-  // if (!user || !user.isAdmin) {
-  //  return <Navigate to="/login" replace />;
-  // }
+  if (!user || !user.isAdmin) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">

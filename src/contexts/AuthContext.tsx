@@ -13,7 +13,7 @@ import { toast } from "sonner";
 /* -------------------------------------------------------------------------- */
 // A type-safe timeout wrapper that works for both Promises and Supabase builders
 // Helper: timeout wrapper for detecting stuck promises
-const withTimeout = (promise: Promise<any>, label: string, ms = 8000) =>
+const withTimeout = (promise: Promise<any>, label: string, ms = 20000) =>
   Promise.race([
     promise,
     new Promise((_, reject) =>
@@ -65,63 +65,73 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const fetchProfile = async (supabaseUser: any) => {
     console.log("[fetchProfile] called for:", supabaseUser?.email);
 
-    try {
-      const { data, error } = await withTimeout(
-        supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", supabaseUser.id)
-          .single() as any,
-        "fetchProfile select"
-      );
-
-      if (error) {
-        console.log("[fetchProfile] error:", error);
-        if (error.code === "PGRST116") {
-          console.log("[fetchProfile] No profile found, creating new one...");
-          const { data: newProfile, error: createError } = await supabase
+    const tryFetch = async (attempt = 1): Promise<void> => {
+      try {
+        const { data, error } = await withTimeout(
+          supabase
             .from("profiles")
-            .insert({
+            .select("*")
+            .eq("id", supabaseUser.id)
+            .single() as any,
+          "fetchProfile select",
+          25000 // 25s for profile fetch
+        );
+
+        if (error) {
+          if (error.code === "PGRST116") {
+            console.log("[fetchProfile] No profile found, creating new one...");
+            const { data: newProfile, error: createError } = await supabase
+              .from("profiles")
+              .insert({
+                id: supabaseUser.id,
+                email: supabaseUser.email,
+                name: supabaseUser.email,
+                is_admin: false,
+              })
+              .select()
+              .single();
+
+            if (createError) throw createError;
+            setUser({
               id: supabaseUser.id,
               email: supabaseUser.email,
-              name: supabaseUser.email,
-              is_admin: false,
-            })
-            .select()
-            .single();
-
-          if (createError) throw createError;
-          console.log("[fetchProfile] New profile created:", newProfile);
-          setUser({
-            id: supabaseUser.id,
-            email: supabaseUser.email,
-            name: newProfile.name || supabaseUser.email,
-            isAdmin: !!newProfile.is_admin,
-            avatar_url: newProfile.avatar_url || null,
-          });
-          return;
+              name: newProfile.name || supabaseUser.email,
+              isAdmin: !!newProfile.is_admin,
+              avatar_url: newProfile.avatar_url || null,
+            });
+            return;
+          }
+          throw error;
         }
-        throw error;
-      }
 
-      console.log("[fetchProfile] Fetched data:", data);
-      setUser({
-        id: supabaseUser.id,
-        email: supabaseUser.email,
-        name: data.name || supabaseUser.email,
-        isAdmin: !!data.is_admin,
-        avatar_url: data.avatar_url || null,
-      });
-    } catch (err) {
-      console.error("[fetchProfile] Failed:", err);
-      setUser({
-        id: supabaseUser.id,
-        email: supabaseUser.email,
-        name: supabaseUser.email,
-        isAdmin: false,
-        avatar_url: null,
-      });
-    }
+        setUser({
+          id: supabaseUser.id,
+          email: supabaseUser.email,
+          name: data.name || supabaseUser.email,
+          isAdmin: !!data.is_admin,
+          avatar_url: data.avatar_url || null,
+        });
+      } catch (err) {
+        if (attempt < 3) {
+          console.warn(`[fetchProfile] Attempt ${attempt} failed, retrying...`, err);
+          await new Promise(resolve => setTimeout(resolve, 1500 * attempt));
+          return tryFetch(attempt + 1);
+        }
+        
+        console.error("[fetchProfile] All attempts failed:", err);
+        // Fallback to basic user info without admin rights instead of null
+        // this avoids infinite logout loops if DB is temporarily down
+        setUser({
+          id: supabaseUser.id,
+          email: supabaseUser.email,
+          name: supabaseUser.email,
+          isAdmin: false,
+          avatar_url: null,
+        });
+      }
+    };
+
+    await tryFetch();
   };
 
   /* ------------------------------------------------------------------------ */

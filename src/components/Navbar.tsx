@@ -4,14 +4,18 @@ import { useAuth } from "../contexts/AuthContext";
 import { useCart } from "../contexts/CartContext";
 import { Button } from "./ui/button";
 import { ShoppingBag, Menu, X, User } from "lucide-react";
-import React from "react";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "./ui/dropdown-menu";
 import logoText from "../assets/design-thesis-logo-text.png";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { items } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
   
   const cartItemCount = items.reduce((total, item) => total + item.quantity, 0);
@@ -23,33 +27,6 @@ const Navbar = () => {
     { path: "/testimonials", label: "Testimonials" },
     { path: "/contact", label: "Contact" },
   ];
-
-  // Close user menu when clicking outside
-  const handleClickOutside = (event: MouseEvent) => {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.user-menu-container')) {
-      setIsUserMenuOpen(false);
-    }
-  };
-
-  const handleLogout = async () => {
-    console.log('Sign out button clicked');
-    try {
-      console.log('Initiating sign out...');
-      await logout();
-      console.log('Sign out successful');
-    } catch (error) {
-      console.error('Failed to sign out:', error);
-    }
-  };
-
-  // Add and remove click outside listener
-  React.useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   return (
     <header className="bg-background border-b border-border sticky top-0 z-50">
@@ -88,38 +65,35 @@ const Navbar = () => {
         {/* User menu & cart - desktop */}
         <div className="hidden md:flex items-center space-x-8">
           {user && (
-            <div className="relative user-menu-container">
-              <Button 
-                variant="ghost" 
-                className="flex items-center gap-2"
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              >
-                <User size={18} className="text-black" />
-                <span className="text-sm text-black">{user.name}</span>
-              </Button>
-              {isUserMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-background border border-border rounded-12 shadow-lg py-1">
-                  {user.isAdmin && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  className="flex items-center gap-2 outline-none focus-visible:ring-0"
+                >
+                  <User size={18} className="text-black" />
+                  <span className="text-sm text-black">{user.name}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 bg-background border border-border rounded-12 shadow-lg py-1">
+                {user.isAdmin && (
+                  <DropdownMenuItem asChild>
                     <Link 
                       to="/admin" 
-                      className="block px-4 py-2 text-sm text-black hover:bg-secondary"
-                      onClick={() => setIsUserMenuOpen(false)}
+                      className="cursor-pointer block w-full"
                     >
                       Admin Dashboard
                     </Link>
-                  )}
-                  <button 
-                    onClick={async () => {
-                      await handleLogout();
-                      setIsUserMenuOpen(false);
-                    }}
-                    className="block w-full text-left px-4 py-2 text-sm text-black hover:bg-secondary"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              )}
-            </div>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem 
+                  onClick={logout}
+                  className="cursor-pointer text-destructive focus:text-destructive"
+                >
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
           
           <Link to="/checkout" className="relative">
@@ -191,19 +165,9 @@ const Navbar = () => {
                     </Link>
                   )}
                   <Button 
-                    onClick={async () => {
-                      console.log('Sign out button clicked');
-                      try {
-                        console.log('Initiating sign out...');
-                        await logout();
-                        console.log('Sign out successful');
-                        // The auth state change will be handled by the AuthProvider
-                      } catch (error) {
-                        console.error('Failed to sign out:', error);
-                      }
-                    }}
+                    onClick={logout}
                     variant="ghost" 
-                    className="w-full text-left p-0 justify-start h-auto text-base"
+                    className="w-full text-left p-0 justify-start h-auto text-base text-destructive hover:text-destructive hover:bg-transparent"
                   >
                     Sign Out
                   </Button>
